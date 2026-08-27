@@ -71,3 +71,14 @@ class StorageException(FidioException):
             details=details
         )
 
+
+class MediaProcessingException(FidioException):
+    def __init__(self, message: str, details: Optional[Dict[str, Any]] = None):
+        super().__init__(
+            message=f"Media processing operation failed: {message}",
+            code="MEDIA_PROCESSING_ERROR",
+            status_code=500,
+            details=details
+        )
+
+
