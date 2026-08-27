@@ -107,3 +107,13 @@ async def root():
         "tagline": "Imagine. Create. Fídíò.",
         "documentation": "/docs"
     }
+
+
+# Include API Routers
+from apps.api.routes import projects_router, generation_router, jobs_router, assets_router
+
+app.include_router(projects_router, prefix=settings.API_V1_PREFIX)
+app.include_router(generation_router, prefix=settings.API_V1_PREFIX)
+app.include_router(jobs_router, prefix=settings.API_V1_PREFIX)
+app.include_router(assets_router, prefix=settings.API_V1_PREFIX)
+
