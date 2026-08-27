@@ -22,6 +22,8 @@ class JobStateMachine:
     @staticmethod
     def can_transition(current_status: JobStatus, target_status: JobStatus) -> bool:
         """Check if transition from current_status to target_status is valid."""
+        if current_status == target_status:
+            return True
         return target_status in VALID_TRANSITIONS.get(current_status, set())
 
     @classmethod

@@ -3,158 +3,880 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Fídíò Studio — Imagine. Create. Fídíò.</title>
-  <meta name="description" content="Fídíò Studio is an intelligent creative technology platform designed to transform user ideas into production-ready video content.">
+  <title>Fídíò Studio — AI-Powered Creative Video Production</title>
+  <meta name="description" content="Fídíò Studio transforms user ideas into production-ready video content through structured AI understanding, multi-modal generation, and precise audio-visual composition.">
   <link rel="icon" type="image/svg+xml" href="/branding/favicon/favicon.svg">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
   <style>
     :root {
-      --bg-base: #090A0F;
-      --bg-surface: #12131A;
-      --border-color: #26293B;
-      --text-main: #F4F5F7;
+      --bg-base: #0B0F19;
+      --bg-surface: #131927;
+      --bg-surface-elevated: #1C2436;
+      --border-color: #263147;
+      --border-glow: #3B4866;
+      --text-main: #F3F4F6;
       --text-muted: #9CA3AF;
+      --text-dim: #6B7280;
+      
+      --accent-violet: #6366F1;
       --accent-purple: #9333EA;
       --accent-pink: #EC4899;
+      --accent-cyan: #06B6D4;
+      --accent-green: #10B981;
+      --accent-amber: #F59E0B;
+      --accent-red: #EF4444;
+
+      --gradient-brand: linear-gradient(135deg, #6366F1 0%, #9333EA 50%, #EC4899 100%);
+      --gradient-surface: linear-gradient(180deg, rgba(25, 33, 50, 0.8) 0%, rgba(15, 20, 32, 0.9) 100%);
+      --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
     }
+
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg-base);
       color: var(--text-main);
-      font-family: Inter, system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
-      padding: 2rem 1rem;
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.5;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
+    }
+
+    /* Layout Containers */
+    .app-header {
+      background: rgba(19, 25, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+    .nav-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
       align-items: center;
-      min-height: 100vh;
+      justify-content: space-between;
     }
-    header {
-      text-align: center;
-      max-width: 800px;
-      margin-bottom: 2.5rem;
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      text-decoration: none;
+      color: inherit;
+      cursor: pointer;
     }
-    .brand-logo {
-      width: 240px;
-      height: auto;
-      margin-bottom: 1.5rem;
+    .brand-logo-mark {
+      height: 36px;
+      width: auto;
     }
-    h1 {
-      font-size: 2.5rem;
-      font-weight: 800;
-      background: linear-gradient(135deg, #8B5CF6, #EC4899);
+    .brand-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      background: var(--gradient-brand);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 0.5rem;
-    }
-    .tagline {
-      font-size: 1.25rem;
-      color: var(--text-muted);
-      margin-bottom: 1rem;
-      font-weight: 500;
     }
     .status-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.875rem;
+      border-radius: 9999px;
+      background: rgba(16, 185, 129, 0.1);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--accent-green);
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-green);
+      box-shadow: 0 0 8px var(--accent-green);
+      animation: pulse-green 2s infinite;
+    }
+    @keyframes pulse-green {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+      70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+
+    .btn-primary {
+      background: var(--gradient-brand);
+      color: white;
+      font-weight: 600;
+      font-size: 0.9375rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: 0.5rem;
+      border: none;
+      cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.4rem 1rem;
-      border-radius: 9999px;
-      background-color: var(--bg-surface);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(99, 102, 241, 0.4);
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.6);
+    }
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-secondary {
+      background: var(--bg-surface-elevated);
+      color: var(--text-main);
       border: 1px solid var(--border-color);
-      font-size: 0.875rem;
-      color: #10B981;
-    }
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background-color: #10B981;
-      box-shadow: 0 0 8px #10B981;
-    }
-    main {
-      max-width: 1000px;
-      width: 100%;
-    }
-    .board-container {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 1rem;
-      padding: 1.5rem;
-      margin-bottom: 2.5rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
-      text-align: center;
-    }
-    .board-container img {
-      max-width: 100%;
-      height: auto;
+      font-weight: 500;
+      font-size: 0.9375rem;
+      padding: 0.65rem 1.25rem;
       border-radius: 0.5rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.2s ease;
     }
-    .grid {
+    .btn-secondary:hover {
+      background: #253047;
+      border-color: var(--border-glow);
+    }
+
+    /* Main Container */
+    main.app-content {
+      max-width: 1280px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem 1.5rem;
+      flex: 1;
+    }
+
+    /* Dashboard Header */
+    .dashboard-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 2rem;
+    }
+    .dashboard-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+    }
+    .dashboard-subtitle {
+      color: var(--text-muted);
+      font-size: 0.9375rem;
+      margin-top: 0.25rem;
+    }
+
+    /* Project Cards Grid */
+    .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
       gap: 1.5rem;
-      margin-bottom: 2.5rem;
     }
-    .card {
+    .project-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
       border-radius: 0.75rem;
       padding: 1.5rem;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      overflow: hidden;
     }
-    .card h3 {
-      font-size: 1.125rem;
-      color: var(--accent-purple);
-      margin-bottom: 0.5rem;
+    .project-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--gradient-brand);
+      opacity: 0;
+      transition: opacity 0.25s ease;
     }
-    .card p {
-      font-size: 0.9375rem;
-      color: var(--text-muted);
+    .project-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--border-glow);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
     }
-    footer {
-      text-align: center;
+    .project-card:hover::before {
+      opacity: 1;
+    }
+    .card-header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.875rem;
+    }
+    .card-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .badge-status {
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 0.25rem 0.65rem;
+      border-radius: 9999px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .badge-completed { background: rgba(16, 185, 129, 0.15); color: var(--accent-green); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-processing { background: rgba(99, 102, 241, 0.15); color: var(--accent-violet); border: 1px solid rgba(99, 102, 241, 0.3); }
+    .badge-failed { background: rgba(239, 68, 68, 0.15); color: var(--accent-red); border: 1px solid rgba(239, 68, 68, 0.3); }
+
+    .card-prompt {
       color: var(--text-muted);
       font-size: 0.875rem;
-      margin-top: auto;
-      padding-top: 2rem;
+      line-height: 1.5;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      margin-bottom: 1.25rem;
+    }
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       border-top: 1px solid var(--border-color);
+      padding-top: 0.875rem;
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+    }
+
+    /* Modal / New Project Flow */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .modal-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glow);
+      border-radius: 1rem;
+      max-width: 640px;
       width: 100%;
-      max-width: 1000px;
+      padding: 2rem;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+      position: relative;
+    }
+    .modal-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+    .modal-subtitle {
+      color: var(--text-muted);
+      font-size: 0.875rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.75rem 1rem;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 0.9375rem;
+      outline: none;
+      transition: border-color 0.2s ease;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--accent-violet);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    }
+
+    /* Style Selector Grid */
+    .style-selector {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0.75rem;
+    }
+    .style-option {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.75rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-size: 0.8125rem;
+      font-weight: 500;
+    }
+    .style-option:hover, .style-option.selected {
+      border-color: var(--accent-violet);
+      background: rgba(99, 102, 241, 0.1);
+      color: white;
+    }
+
+    /* Progress & Inspector View */
+    .inspector-header {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 0.875rem;
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+    .progress-bar-track {
+      height: 8px;
+      background: var(--bg-base);
+      border-radius: 9999px;
+      overflow: hidden;
+      margin: 1rem 0;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--gradient-brand);
+      width: 0%;
+      transition: width 0.4s ease;
+      border-radius: 9999px;
+    }
+
+    /* Video Player Hub */
+    .video-player-container {
+      background: #000;
+      border-radius: 0.875rem;
+      overflow: hidden;
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      margin-bottom: 2rem;
+    }
+    video.fidio-player {
+      width: 100%;
+      height: auto;
+      max-height: 520px;
+      display: block;
+    }
+
+    /* Scene Grid */
+    .scenes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.25rem;
+    }
+    .scene-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      overflow: hidden;
+    }
+    .scene-media-preview {
+      width: 100%;
+      height: 180px;
+      background: #000;
+      object-fit: cover;
+      display: block;
+    }
+    .scene-content {
+      padding: 1rem;
+    }
+    .scene-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
+    }
+    .scene-narration {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    /* Empty States */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      background: var(--bg-surface);
+      border: 1px dashed var(--border-glow);
+      border-radius: 1rem;
+    }
+    .empty-icon {
+      font-size: 3rem;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <header>
-    <img class="brand-logo" src="/branding/logo/fidio-wordmark-dark.svg" fill="none" alt="Fídíò Studio">
-    <h1>Imagine. Create. Fídíò.</h1>
-    <p class="tagline">AI-Powered Creative Production Platform</p>
-    <div class="status-badge">
-      <span class="status-dot"></span> Architecture & Brand Foundation Deployed
+
+  <!-- App Header -->
+  <header class="app-header">
+    <div class="nav-container">
+      <a href="#" class="brand-group" id="btnHomeBrand">
+        <img src="/branding/favicon/fidio-mark.svg" class="brand-logo-mark" alt="Fídíò">
+        <span class="brand-title">Fídíò Studio</span>
+      </a>
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <div class="status-badge">
+          <span class="status-dot"></span> API Engine Active
+        </div>
+        <button class="btn-primary" id="btnOpenNewProject">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+          New Project
+        </button>
+      </div>
     </div>
   </header>
 
-  <main>
-    <section class="board-container">
-      <h2 style="margin-bottom: 1rem; font-size: 1.25rem; color: var(--text-main);">Product UI Brand Board Preview</h2>
-      <img src="/branding/brand-board.svg" fill="none" alt="Fídíò Studio Brand Board">
+  <!-- Main View Container -->
+  <main class="app-content" id="appMain">
+    
+    <!-- View 1: Dashboard & Projects List -->
+    <section id="viewDashboard">
+      <div class="dashboard-header">
+        <div>
+          <h1 class="dashboard-title">Creative Projects</h1>
+          <p class="dashboard-subtitle">Imagine. Create. Multi-modal AI Video Production Pipeline.</p>
+        </div>
+      </div>
+
+      <div class="projects-grid" id="projectsGrid">
+        <!-- Rendered dynamically -->
+      </div>
     </section>
 
-    <section class="grid">
-      <div class="card">
-        <h3>Modular Architecture</h3>
-        <p>Built on FastAPI, Pydantic v2, PostgreSQL, MinIO S3 storage, Redis worker queues, and FFmpeg video orchestration.</p>
+    <!-- View 2: Project Detail & Job Progress Inspector -->
+    <section id="viewInspector" style="display: none;">
+      <div style="margin-bottom: 1.5rem;">
+        <button class="btn-secondary" id="btnBackToDashboard">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+          Back to Projects
+        </button>
       </div>
-      <div class="card">
-        <h3>Structured AI Engine</h3>
-        <p>Decomposes user ideas into multi-scene creative plans, visual prompts, narrative scripts, and audio tracks via OpenRouter.</p>
+
+      <div class="inspector-header">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+          <div>
+            <h2 class="modal-title" id="inspectorProjectTitle">Project Title</h2>
+            <p class="card-prompt" id="inspectorProjectPrompt">Project Prompt...</p>
+          </div>
+          <span class="badge-status badge-processing" id="inspectorStatusBadge">PROCESSING</span>
+        </div>
+
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" id="inspectorProgressBar"></div>
+        </div>
+
+        <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted);">
+          <span id="inspectorCurrentStage">Stage: PLANNING</span>
+          <span id="inspectorProgressPercent">0% Completed</span>
+        </div>
       </div>
-      <div class="card">
-        <h3>Brand Identity System</h3>
-        <p>Complete production vector SVG asset suite, obsidian dark palette, electric violet playhead motif, and design tokens.</p>
+
+      <!-- Render Video Hub (when completed) -->
+      <div id="renderHub" style="display: none;">
+        <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Rendered Video Composition</h3>
+        <div class="video-player-container">
+          <video class="fidio-player" id="mainVideoPlayer" controls poster="/branding/social/fidio-og-template.svg">
+            <source id="videoSource" src="" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem;">
+          <a class="btn-primary" id="btnDownloadRender" href="#" target="_blank" download>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+            Download Rendered MP4
+          </a>
+        </div>
+      </div>
+
+      <!-- Scenes Grid -->
+      <div>
+        <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Generation Scenes & Assets</h3>
+        <div class="scenes-grid" id="scenesGrid">
+          <!-- Rendered dynamically -->
+        </div>
       </div>
     </section>
+
   </main>
 
-  <footer>
-    <p>&copy; 2026 Fídíò Studio. All rights reserved. | <a href="/branding/brand-guidelines.md" style="color: var(--accent-purple); text-decoration: none;">Brand Guidelines</a></p>
-  </footer>
+  <!-- New Project Modal -->
+  <div class="modal-overlay" id="modalNewProject">
+    <div class="modal-card">
+      <h2 class="modal-title">Create New Video Generation</h2>
+      <p class="modal-subtitle">Enter your creative idea prompt and select style parameters for Fídíò Engine.</p>
+
+      <form id="formNewProject">
+        <div class="form-group">
+          <label class="form-label">Project Title</label>
+          <input type="text" class="form-input" id="inputTitle" placeholder="e.g. Cyberpunk City Odyssey" required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Creative Prompt</label>
+          <textarea class="form-textarea" id="inputPrompt" rows="3" placeholder="Describe the scene, narrative, atmosphere, and visual camera movement..." required></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Visual Preset Style</label>
+          <div class="style-selector">
+            <div class="style-option selected" data-style="cinematic">Cinematic</div>
+            <div class="style-option" data-style="anime">Anime</div>
+            <div class="style-option" data-style="photorealistic">Photoreal</div>
+            <div class="style-option" data-style="cyberpunk">Cyberpunk</div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label class="form-label">Aspect Ratio</label>
+            <select class="form-select" id="selectAspect">
+              <option value="16:9">16:9 Landscape</option>
+              <option value="9:16">9:16 Vertical Story</option>
+              <option value="1:1">1:1 Square</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Target Duration</label>
+            <select class="form-select" id="selectDuration">
+              <option value="15">15 Seconds</option>
+              <option value="30">30 Seconds</option>
+              <option value="60">60 Seconds</option>
+            </select>
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 1rem; margin-top: 1.5rem;">
+          <button type="button" class="btn-secondary" id="btnCloseModal">Cancel</button>
+          <button type="submit" class="btn-primary" id="btnSubmitGeneration">
+            <span>Generate Video</span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- JavaScript API Integration Engine -->
+  <script>
+    const API_BASE = '/api/v1';
+    let currentProjectId = null;
+    let pollInterval = null;
+    let selectedStyle = 'cinematic';
+
+    // Elements
+    const modalNewProject = document.getElementById('modalNewProject');
+    const viewDashboard = document.getElementById('viewDashboard');
+    const viewInspector = document.getElementById('viewInspector');
+    const projectsGrid = document.getElementById('projectsGrid');
+    const scenesGrid = document.getElementById('scenesGrid');
+
+    // Init
+    document.addEventListener('DOMContentLoaded', () => {
+      loadProjects();
+      setupEventListeners();
+      checkHashNavigation();
+    });
+
+    function setupEventListeners() {
+      document.getElementById('btnOpenNewProject').addEventListener('click', () => {
+        modalNewProject.classList.add('active');
+      });
+      document.getElementById('btnCloseModal').addEventListener('click', () => {
+        modalNewProject.classList.remove('active');
+      });
+      document.getElementById('btnHomeBrand').addEventListener('click', (e) => {
+        e.preventDefault();
+        showDashboard();
+      });
+      document.getElementById('btnBackToDashboard').addEventListener('click', () => {
+        showDashboard();
+      });
+
+      // Style option picker
+      document.querySelectorAll('.style-option').forEach(el => {
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.style-option').forEach(s => s.classList.remove('selected'));
+          el.classList.add('selected');
+          selectedStyle = el.dataset.style;
+        });
+      });
+
+      // Form submission
+      document.getElementById('formNewProject').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        await handleCreateProject();
+      });
+    }
+
+    // Hash Navigation support
+    function checkHashNavigation() {
+      const hash = window.location.hash;
+      if (hash.startsWith('#project/')) {
+        const projectId = hash.replace('#project/', '');
+        if (projectId) {
+          inspectProject(projectId);
+        }
+      }
+    }
+
+    async function loadProjects() {
+      try {
+        const res = await fetch(`${API_BASE}/projects`);
+        const json = await res.json();
+        if (json.success) {
+          renderProjects(json.data);
+        }
+      } catch (err) {
+        console.error('Failed to load projects:', err);
+      }
+    }
+
+    function renderProjects(projects) {
+      if (!projects || projects.length === 0) {
+        projectsGrid.innerHTML = `
+          <div class="empty-state" style="grid-column: 1 / -1;">
+            <div class="empty-icon">🎬</div>
+            <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 0.5rem;">No Creative Projects Yet</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Click 'New Project' above to transform your ideas into production-ready video content.</p>
+          </div>
+        `;
+        return;
+      }
+
+      projectsGrid.innerHTML = projects.map(p => `
+        <div class="project-card" onclick="inspectProject('${p.id}')">
+          <div>
+            <div class="card-header">
+              <h3 class="card-title">${escapeHtml(p.name)}</h3>
+              <span class="badge-status badge-completed">ACTIVE</span>
+            </div>
+            <p class="card-prompt">${escapeHtml(p.description || 'Custom AI Video Project')}</p>
+          </div>
+          <div class="card-meta">
+            <span>Aspect Ratio: ${p.aspect_ratio || '16:9'}</span>
+            <span>${new Date(p.created_at).toLocaleDateString()}</span>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    async function handleCreateProject() {
+      const submitBtn = document.getElementById('btnSubmitGeneration');
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = '<span>Creating Project...</span>';
+
+      const title = document.getElementById('inputTitle').value;
+      const prompt = document.getElementById('inputPrompt').value;
+      const aspect = document.getElementById('selectAspect').value;
+      const duration = parseInt(document.getElementById('selectDuration').value);
+
+      try {
+        // 1. Create Project
+        const projRes = await fetch(`${API_BASE}/projects`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: title,
+            description: prompt,
+            aspect_ratio: aspect
+          })
+        });
+        const projJson = await projRes.json();
+        if (!projJson.success) {
+          const errMsg = projJson.error ? projJson.error.message : JSON.stringify(projJson.detail || projJson);
+          throw new Error(errMsg);
+        }
+
+        const project = projJson.data;
+
+        // 2. Submit Generation Request
+        const genRes = await fetch(`${API_BASE}/projects/${project.id}/generations`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            prompt: `${selectedStyle} style: ${prompt}`,
+            style: selectedStyle,
+            aspect_ratio: aspect,
+            target_duration_seconds: duration
+          })
+        });
+        const genJson = await genRes.json();
+        if (!genJson.success) {
+          const errMsg = genJson.error ? genJson.error.message : JSON.stringify(genJson.detail || genJson);
+          throw new Error(errMsg);
+        }
+
+        modalNewProject.classList.remove('active');
+        document.getElementById('formNewProject').reset();
+
+        // Inspect project
+        inspectProject(project.id);
+
+      } catch (err) {
+        alert(`Generation Error: ${err.message}`);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerHTML = '<span>Generate Video</span>';
+      }
+    }
+
+    async function inspectProject(projectId) {
+      currentProjectId = projectId;
+      window.location.hash = `#project/${projectId}`;
+      viewDashboard.style.display = 'none';
+      viewInspector.style.display = 'block';
+
+      if (pollInterval) clearInterval(pollInterval);
+
+      // Initial fetch
+      await pollProjectState();
+      // Start 2s polling
+      pollInterval = setInterval(pollProjectState, 2000);
+    }
+
+    async function pollProjectState() {
+      if (!currentProjectId) return;
+
+      try {
+        // Fetch project info
+        const projRes = await fetch(`${API_BASE}/projects/${currentProjectId}`);
+        const projJson = await projRes.json();
+        if (!projJson.success) return;
+
+        const proj = projJson.data;
+        document.getElementById('inspectorProjectTitle').innerText = proj.name;
+        document.getElementById('inspectorProjectPrompt').innerText = proj.description || '';
+
+        // Fetch generation jobs for project
+        const jobsRes = await fetch(`${API_BASE}/projects/${currentProjectId}/jobs`);
+        const jobsJson = await jobsRes.json();
+
+        if (jobsJson.success && jobsJson.data.length > 0) {
+          const job = jobsJson.data[0]; // Latest job
+          updateJobStatusUI(job);
+        }
+
+        // Fetch assets
+        const assetsRes = await fetch(`${API_BASE}/projects/${currentProjectId}/assets`);
+        const assetsJson = await assetsRes.json();
+        if (assetsJson.success) {
+          renderScenesAndAssets(assetsJson.data);
+        }
+
+      } catch (err) {
+        console.error('Polling error:', err);
+      }
+    }
+
+    function updateJobStatusUI(job) {
+      const progressBar = document.getElementById('inspectorProgressBar');
+      const progressPercent = document.getElementById('inspectorProgressPercent');
+      const currentStage = document.getElementById('inspectorCurrentStage');
+      const statusBadge = document.getElementById('inspectorStatusBadge');
+      const renderHub = document.getElementById('renderHub');
+
+      progressBar.style.width = `${job.progress_percentage}%`;
+      progressPercent.innerText = `${job.progress_percentage}% Completed`;
+      currentStage.innerText = `Stage: ${job.current_stage}`;
+
+      if (job.status === 'COMPLETED') {
+        statusBadge.className = 'badge-status badge-completed';
+        statusBadge.innerText = 'COMPLETED';
+        if (pollInterval) clearInterval(pollInterval);
+
+        // Fetch render details if completed
+        fetchRenderDetails(job.project_id);
+      } else if (job.status === 'FAILED') {
+        statusBadge.className = 'badge-status badge-failed';
+        statusBadge.innerText = 'FAILED';
+        if (pollInterval) clearInterval(pollInterval);
+      } else {
+        statusBadge.className = 'badge-status badge-processing';
+        statusBadge.innerText = job.status;
+      }
+    }
+
+    async function fetchRenderDetails(projectId) {
+      // Create synthetic or presigned video source for completed video preview
+      const renderHub = document.getElementById('renderHub');
+      const videoPlayer = document.getElementById('mainVideoPlayer');
+      const btnDownload = document.getElementById('btnDownloadRender');
+
+      renderHub.style.display = 'block';
+      
+      // Presigned or sample video render URL
+      const mockRenderUrl = `${API_BASE}/projects/${projectId}/assets`;
+      btnDownload.href = mockRenderUrl;
+    }
+
+    function renderScenesAndAssets(assets) {
+      if (!assets || assets.length === 0) {
+        scenesGrid.innerHTML = `
+          <div style="grid-column: 1 / -1; color: var(--text-muted); padding: 1.5rem; text-align: center;">
+            Pipeline step running... Generating visual scene assets and audio narration clips.
+          </div>
+        `;
+        return;
+      }
+
+      scenesGrid.innerHTML = assets.map((a, i) => `
+        <div class="scene-card">
+          <div class="scene-content">
+            <div class="scene-title">Asset #${i+1} — ${a.asset_type}</div>
+            <p class="scene-narration">Bucket: ${a.bucket_name}</p>
+            <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Key: ${escapeHtml(a.object_key)}</p>
+            ${a.download_url ? `<a href="${a.download_url}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.5rem;">View Signed Asset →</a>` : ''}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function showDashboard() {
+      if (pollInterval) clearInterval(pollInterval);
+      currentProjectId = null;
+      window.location.hash = '';
+      viewInspector.style.display = 'none';
+      viewDashboard.style.display = 'block';
+      loadProjects();
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    }
+  </script>
 </body>
 </html>
