@@ -98,7 +98,7 @@ async def test_complete_end_to_end_generation_pipeline(async_db: AsyncSession):
 
     # Step 8: Verify Storage Adapter Presigned URL Generation
     storage = DevMockStorageAdapter()
-    presigned_url = storage.generate_presigned_url(render.bucket_name, render.object_key, expires_in=3600)
+    presigned_url = storage.generate_presigned_url(render.bucket_name, render.object_key, expires_in_seconds=3600)
     assert presigned_url.startswith("http://") or presigned_url.startswith("https://")
     assert render.object_key in presigned_url
 
