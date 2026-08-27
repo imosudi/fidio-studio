@@ -1,1 +1,6 @@
-"""Generation pipeline orchestrator, state machine, and stage handlers."""
+"""Fídíò Generation Engine & Orchestrator."""
+from packages.generation.planner import GenerationPlanner
+
+__all__ = [
+    "GenerationPlanner"
+]

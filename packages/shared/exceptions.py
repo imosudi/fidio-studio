@@ -47,6 +47,21 @@ class ProviderException(FidioException):
         )
 
 
+class ProviderTimeoutException(ProviderException):
+    def __init__(self, provider: str, message: str = "Request timed out"):
+        super().__init__(provider=provider, message=message, details={"error_type": "timeout"})
+
+
+class ProviderRateLimitException(ProviderException):
+    def __init__(self, provider: str, message: str = "Rate limit exceeded"):
+        super().__init__(provider=provider, message=message, details={"error_type": "rate_limit"})
+
+
+class ProviderValidationException(ProviderException):
+    def __init__(self, provider: str, message: str, details: Optional[Dict[str, Any]] = None):
+        super().__init__(provider=provider, message=message, details={"error_type": "validation", **(details or {})})
+
+
 class StorageException(FidioException):
     def __init__(self, message: str, details: Optional[Dict[str, Any]] = None):
         super().__init__(
@@ -55,3 +70,4 @@ class StorageException(FidioException):
             status_code=500,
             details=details
         )
+
