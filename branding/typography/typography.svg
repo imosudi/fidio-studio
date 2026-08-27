@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <rect width="800" height="450" fill="#090A0F" rx="16" />
+
+  <text x="40" y="50" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="700" fill="#F4F5F7">Fídíò Typography System</text>
+  <text x="40" y="75" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#9CA3AF">Inter Display, Inter UI, JetBrains Mono</text>
+
+  <!-- Display Specimen -->
+  <g transform="translate(40, 120)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#A855F7" letter-spacing="2">DISPLAY 48PX / BOLD</text>
+    <text x="0" y="45" font-family="Inter, sans-serif" font-size="44" font-weight="700" fill="#F4F5F7">Imagine. Create. F&#xED;d&#xED;&#xF2;.</text>
+  </g>
+
+  <!-- Heading Specimen -->
+  <g transform="translate(40, 220)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#A855F7" letter-spacing="2">HEADING 24PX / SEMIBOLD</text>
+    <text x="0" y="30" font-family="Inter, sans-serif" font-size="24" font-weight="600" fill="#F4F5F7">Structured AI Script &amp; Video Composition Engine</text>
+  </g>
+
+  <!-- Body Specimen -->
+  <g transform="translate(40, 300)">
+    <text x="0" y="0" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#A855F7" letter-spacing="2">BODY 16PX / REGULAR</text>
+    <text x="0" y="25" font-family="Inter, sans-serif" font-size="16" font-weight="400" fill="#D1D5DB">F&#xED;d&#xED;&#xF2; Studio converts prompts into multi-scene video plans via OpenRouter and FFmpeg.</text>
+  </g>
+
+  <!-- Code Specimen -->
+  <g transform="translate(40, 375)">
+    <text x="0" y="0" font-family="JetBrains Mono, monospace" font-size="12" font-weight="600" fill="#EC4899" letter-spacing="2">MONOSPACE 14PX / JETBRAINS MONO</text>
+    <text x="0" y="25" font-family="JetBrains Mono, monospace" font-size="14" fill="#9CA3AF">job_id: &quot;job_01H9Z23&quot; | s3_key: &quot;fidio-renders/render_1080p.mp4&quot;</text>
+  </g>
+</svg>

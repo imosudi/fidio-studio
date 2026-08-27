@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <rect width="800" height="400" fill="#090A0F" rx="16" />
+
+  <text x="40" y="50" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="700" fill="#F4F5F7">Fídíò Color Palette System</text>
+  <text x="40" y="75" font-family="Inter, system-ui, sans-serif" font-size="14" fill="#9CA3AF">Curated visual swatches and token references</text>
+
+  <!-- Swatch 1: Obsidian Base -->
+  <g transform="translate(40, 110)">
+    <rect width="130" height="120" rx="12" fill="#090A0F" stroke="#26293B" stroke-width="2" />
+    <text x="12" y="155" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#F4F5F7">Obsidian Base</text>
+    <text x="12" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="#9CA3AF">#090A0F</text>
+  </g>
+
+  <!-- Swatch 2: Dark Surface -->
+  <g transform="translate(190, 110)">
+    <rect width="130" height="120" rx="12" fill="#12131A" stroke="#26293B" stroke-width="2" />
+    <text x="12" y="155" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#F4F5F7">Dark Surface</text>
+    <text x="12" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="#9CA3AF">#12131A</text>
+  </g>
+
+  <!-- Swatch 3: Electric Violet (Accent) -->
+  <g transform="translate(340, 110)">
+    <rect width="130" height="120" rx="12" fill="#9333EA" />
+    <text x="12" y="155" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Electric Violet</text>
+    <text x="12" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="#F3E8FF">#9333EA</text>
+  </g>
+
+  <!-- Swatch 4: Vivid Magenta -->
+  <g transform="translate(490, 110)">
+    <rect width="130" height="120" rx="12" fill="#EC4899" />
+    <text x="12" y="155" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#FFFFFF">Vivid Magenta</text>
+    <text x="12" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="#FCE7F3">#EC4899</text>
+  </g>
+
+  <!-- Swatch 5: Warm White -->
+  <g transform="translate(640, 110)">
+    <rect width="130" height="120" rx="12" fill="#F4F5F7" />
+    <text x="12" y="155" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#090A0F">Warm White</text>
+    <text x="12" y="175" font-family="JetBrains Mono, monospace" font-size="12" fill="#4B5563">#F4F5F7</text>
+  </g>
+
+  <!-- Functional Row -->
+  <g transform="translate(40, 310)">
+    <rect x="0" y="0" width="130" height="40" rx="8" fill="#10B981" />
+    <text x="20" y="25" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">Success #10B981</text>
+
+    <rect x="150" y="0" width="130" height="40" rx="8" fill="#F59E0B" />
+    <text x="170" y="25" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">Warning #F59E0B</text>
+
+    <rect x="300" y="0" width="130" height="40" rx="8" fill="#EF4444" />
+    <text x="320" y="25" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#FFFFFF">Error #EF4444</text>
+  </g>
+</svg>

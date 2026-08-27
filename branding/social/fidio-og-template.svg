@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="ogGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+    <radialGradient id="ogGlow" cx="80%" cy="20%" r="60%">
+      <stop offset="0%" stop-color="rgba(147, 51, 234, 0.25)" />
+      <stop offset="100%" stop-color="rgba(9, 10, 15, 0)" />
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#090A0F" />
+  <rect width="1200" height="630" fill="url(#ogGlow)" />
+
+  <!-- Subtle Border Grid -->
+  <rect x="40" y="40" width="1120" height="550" rx="24" fill="none" stroke="#26293B" stroke-width="2" />
+
+  <!-- Main Branding Content -->
+  <g transform="translate(100, 160)">
+    <!-- Symbol -->
+    <g transform="translate(0, 0) scale(0.6)">
+      <path d="M -45,-67 L -15,-97 L -15,53 L -45,83 Z" fill="url(#ogGrad)" />
+      <path d="M 15,-82 L 45,-112 L 45,38 L 15,68 Z" fill="url(#ogGrad)" />
+      <path d="M -45,-7 L 67,-7" stroke="#F4F5F7" stroke-width="12" stroke-linecap="round" />
+    </g>
+
+    <!-- Wordmark & Product Title -->
+    <text x="70" y="20" font-family="Inter, system-ui, sans-serif" font-size="48" font-weight="800" fill="#F4F5F7" letter-spacing="2">Fídíò Studio</text>
+    <text x="70" y="55" font-family="Inter, system-ui, sans-serif" font-size="20" font-weight="600" fill="#A855F7" letter-spacing="4">AI-POWERED CREATIVE PRODUCTION</text>
+
+    <!-- Headline Tagline -->
+    <text x="0" y="160" font-family="Inter, system-ui, sans-serif" font-size="56" font-weight="700" fill="#FFFFFF">Imagine. Create. Fídíò.</text>
+    <text x="0" y="210" font-family="Inter, system-ui, sans-serif" font-size="24" font-weight="400" fill="#9CA3AF">Transform ideas into structured multi-scene videos with intelligent AI orchestration.</text>
+
+    <!-- Tech Badges -->
+    <rect x="0" y="270" width="140" height="40" rx="20" fill="#12131A" stroke="#3B3F58" stroke-width="1" />
+    <text x="24" y="295" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#D1D5DB">Modular Engine</text>
+
+    <rect x="156" y="270" width="160" height="40" rx="20" fill="#12131A" stroke="#3B3F58" stroke-width="1" />
+    <text x="178" y="295" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#D1D5DB">OpenRouter AI</text>
+
+    <rect x="332" y="270" width="160" height="40" rx="20" fill="#12131A" stroke="#3B3F58" stroke-width="1" />
+    <text x="354" y="295" font-family="Inter, system-ui, sans-serif" font-size="14" font-weight="600" fill="#D1D5DB">FFmpeg Render</text>
+  </g>
+</svg>

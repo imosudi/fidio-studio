@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 650" width="1000" height="650">
+  <defs>
+    <linearGradient id="boardAccent" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#8B5CF6" />
+      <stop offset="100%" stop-color="#EC4899" />
+    </linearGradient>
+  </defs>
+
+  <!-- App Window Background -->
+  <rect width="1000" height="650" fill="#090A0F" rx="16" stroke="#26293B" stroke-width="2" />
+
+  <!-- Top App Navigation Header -->
+  <g transform="translate(0, 0)">
+    <rect width="1000" height="70" fill="#12131A" stroke="#26293B" stroke-width="1" />
+    <!-- Window controls -->
+    <circle cx="30" cy="35" r="6" fill="#EF4444" />
+    <circle cx="48" cy="35" r="6" fill="#F59E0B" />
+    <circle cx="66" cy="35" r="6" fill="#10B981" />
+
+    <!-- Wordmark in Header -->
+    <g transform="translate(110, 18) scale(0.6)">
+      <path d="M 0,20 L 0,80 M 0,20 L 32,20 M 0,46 L 24,46" stroke="#F4F5F7" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+      <path d="M 54,40 L 54,80" stroke="#F4F5F7" stroke-width="8" fill="none" />
+      <path d="M 48,26 L 64,12" stroke="url(#boardAccent)" stroke-width="7" stroke-linecap="round" />
+      <path d="M 112,20 L 112,80 M 112,80 C 80,80 76,40 112,40" stroke="#F4F5F7" stroke-width="8" fill="none" />
+      <path d="M 138,40 L 138,80" stroke="#F4F5F7" stroke-width="8" fill="none" />
+      <path d="M 132,26 L 148,12" stroke="url(#boardAccent)" stroke-width="7" stroke-linecap="round" />
+      <circle cx="188" cy="60" r="20" stroke="#F4F5F7" stroke-width="8" fill="none" />
+      <path d="M 194,26 L 180,14" stroke="#D1D5DB" stroke-width="6" stroke-linecap="round" />
+    </g>
+
+    <!-- Header Navigation Links -->
+    <text x="320" y="40" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#F4F5F7">Dashboard</text>
+    <text x="430" y="40" font-family="Inter, sans-serif" font-size="14" font-weight="500" fill="#9CA3AF">Projects</text>
+    <text x="530" y="40" font-family="Inter, sans-serif" font-size="14" font-weight="500" fill="#9CA3AF">Generations</text>
+    <text x="650" y="40" font-family="Inter, sans-serif" font-size="14" font-weight="500" fill="#9CA3AF">Settings</text>
+
+    <!-- Primary Action Button -->
+    <rect x="820" y="16" width="140" height="38" rx="19" fill="url(#boardAccent)" />
+    <text x="846" y="40" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#FFFFFF">+ New Project</text>
+  </g>
+
+  <!-- Sidebar -->
+  <rect x="0" y="70" width="220" height="580" fill="#0D0E15" stroke="#26293B" stroke-width="1" />
+  <text x="24" y="110" font-family="Inter, sans-serif" font-size="12" font-weight="700" fill="#6B7280" letter-spacing="1">PROJECTS</text>
+  <rect x="16" y="125" width="188" height="36" rx="8" fill="#1E202E" />
+  <text x="32" y="148" font-family="Inter, sans-serif" font-size="13" font-weight="600" fill="#A855F7">Fídíò Brand Showcase</text>
+  <text x="32" y="190" font-family="Inter, sans-serif" font-size="13" font-weight="400" fill="#9CA3AF">Product Launch MVP</text>
+  <text x="32" y="225" font-family="Inter, sans-serif" font-size="13" font-weight="400" fill="#9CA3AF">Social Campaign 16:9</text>
+
+  <!-- Main Content Area -->
+  <g transform="translate(250, 95)">
+    <!-- Project Card Header -->
+    <text x="0" y="30" font-family="Inter, sans-serif" font-size="22" font-weight="700" fill="#F4F5F7">Fídíò Brand Showcase</text>
+    <text x="0" y="52" font-family="Inter, sans-serif" font-size="13" fill="#9CA3AF">Generated 4 scenes • Target duration: 15s • 16:9 Cinematic</text>
+
+    <!-- Active Video Preview Player Mockup -->
+    <rect x="0" y="75" width="460" height="260" rx="12" fill="#12131A" stroke="#26293B" stroke-width="2" />
+    <circle cx="230" cy="205" r="32" fill="url(#boardAccent)" />
+    <polygon points="224,193 242,205 224,217" fill="#FFFFFF" />
+
+    <!-- Timeline & Playhead Concept -->
+    <rect x="0" y="350" width="460" height="40" rx="8" fill="#1A1C27" stroke="#26293B" stroke-width="1" />
+    <rect x="10" y="360" width="100" height="20" rx="4" fill="#3B3F58" />
+    <rect x="115" y="360" width="120" height="20" rx="4" fill="#9333EA" />
+    <rect x="240" y="360" width="90" height="20" rx="4" fill="#3B3F58" />
+    <rect x="335" y="360" width="115" height="20" rx="4" fill="#EC4899" />
+    <!-- Playhead Needle -->
+    <line x1="175" y1="345" x2="175" y2="400" stroke="#F4F5F7" stroke-width="3" />
+    <polygon points="170,345 180,345 175,353" fill="#F4F5F7" />
+
+    <!-- Generation Status Panel -->
+    <rect x="490" y="75" width="220" height="315" rx="12" fill="#12131A" stroke="#26293B" stroke-width="1" />
+    <text x="510" y="105" font-family="Inter, sans-serif" font-size="14" font-weight="700" fill="#F4F5F7">GENERATION STATUS</text>
+
+    <!-- Status Items -->
+    <circle cx="515" cy="140" r="5" fill="#10B981" />
+    <text x="530" y="144" font-family="Inter, sans-serif" font-size="12" fill="#D1D5DB">1. AI Planning (Done)</text>
+
+    <circle cx="515" cy="180" r="5" fill="#10B981" />
+    <text x="530" y="184" font-family="Inter, sans-serif" font-size="12" fill="#D1D5DB">2. Scene Assets (Done)</text>
+
+    <circle cx="515" cy="220" r="5" fill="#9333EA" />
+    <text x="530" y="224" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#A855F7">3. FFmpeg Render (78%)</text>
+    <rect x="530" y="235" width="160" height="6" rx="3" fill="#26293B" />
+    <rect x="530" y="235" width="125" height="6" rx="3" fill="url(#boardAccent)" />
+
+    <circle cx="515" cy="270" r="5" fill="#4B5563" />
+    <text x="530" y="274" font-family="Inter, sans-serif" font-size="12" fill="#6B7280">4. MinIO S3 Store</text>
+
+    <!-- Download CTA -->
+    <rect x="510" y="325" width="180" height="36" rx="8" fill="#1E202E" stroke="#3B3F58" stroke-width="1" />
+    <text x="545" y="348" font-family="Inter, sans-serif" font-size="12" font-weight="600" fill="#F4F5F7">Download MP4</text>
+  </g>
+</svg>

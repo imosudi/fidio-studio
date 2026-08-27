@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <rect width="320" height="80" fill="#090A0F" rx="8" stroke="#26293B" stroke-width="1" />
+  <text x="24" y="50" font-family="JetBrains Mono, Fira Code, monospace" font-size="32" font-weight="700" fill="#F4F5F7" letter-spacing="4">fidio</text>
+  <circle cx="280" cy="40" r="8" fill="#9333EA" />
+</svg>
