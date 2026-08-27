@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     API_V1_PREFIX: str = "/api/v1"
 
     # PostgreSQL Configuration
-    POSTGRES_HOST: str = "104.207.88.53"
+    POSTGRES_HOST: str = "localhost"
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "fidio-studio"
     POSTGRES_USER: str = "fidio-studio"
