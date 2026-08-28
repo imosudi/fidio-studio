@@ -43,8 +43,8 @@ class OpenRouterLLMProvider(LLMProvider):
     ) -> LLMResponse:
         target_model = model_name or self.default_model
 
-        if not self.api_key:
-            logger.warning("OpenRouter API key missing. Falling back to DevMockLLMProvider.")
+        if not self.api_key or self.api_key.startswith("mock"):
+            logger.warning("OpenRouter API key missing or mock. Falling back to DevMockLLMProvider.")
             from packages.providers.mock import DevMockLLMProvider
             mock = DevMockLLMProvider()
             return await mock.generate(
@@ -81,7 +81,7 @@ class OpenRouterLLMProvider(LLMProvider):
         headers = {
             "Authorization": f"Bearer {self.api_key}",
             "HTTP-Referer": "https://fidio.site",
-            "X-Title": "Fídíò Studio",
+            "X-Title": "Fidio Studio",
             "Content-Type": "application/json"
         }
 

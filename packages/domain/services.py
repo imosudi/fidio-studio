@@ -128,3 +128,9 @@ class GenerationService:
         if not job:
             raise EntityNotFoundException("GenerationJob", str(job_id))
         return job
+
+    async def list_project_jobs(self, project_id: uuid.UUID) -> Sequence[GenerationJob]:
+        query = select(GenerationJob).where(GenerationJob.project_id == project_id).order_by(GenerationJob.created_at.desc())
+        result = await self.session.execute(query)
+        return result.scalars().all()
+

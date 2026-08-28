@@ -5,7 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from packages.domain.database import get_async_db
 from packages.domain.services import ProjectService
-from apps.api.schemas import APIResponse, ProjectCreate, ProjectResponse
+from apps.api.schemas import APIResponse, ProjectCreate, ProjectResponse, GenerationJobResponse
 
 router = APIRouter(prefix="/projects", tags=["Projects"])
 
@@ -59,3 +59,17 @@ async def delete_project(
     service = ProjectService(db)
     await service.delete_project(project_id)
     return APIResponse(data={"message": f"Project {project_id} deleted successfully."})
+
+
+@router.get("/{project_id}/jobs", response_model=APIResponse[List[GenerationJobResponse]])
+async def list_project_jobs(
+    project_id: uuid.UUID,
+    db: AsyncSession = Depends(get_async_db)
+):
+    """List generation jobs for a specific project."""
+    from packages.domain.services import GenerationService
+    from apps.api.schemas import GenerationJobResponse
+    service = GenerationService(db)
+    jobs = await service.list_project_jobs(project_id)
+    return APIResponse(data=[GenerationJobResponse.model_validate(j) for j in jobs])
+
