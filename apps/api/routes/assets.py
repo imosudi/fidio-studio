@@ -13,7 +13,10 @@ from packages.shared.config import settings
 from apps.api.schemas import APIResponse, MediaAssetResponse, RenderResponse
 from packages.shared.exceptions import EntityNotFoundException
 
+from packages.shared.logging import logger
+
 import os
+import shutil
 import subprocess
 
 router = APIRouter(tags=["Assets & Renders"])
@@ -35,7 +38,11 @@ def get_storage_adapter() -> ObjectStorage:
 
 
 @router.get("/assets/raw/{bucket}/{object_key:path}")
-async def get_raw_asset(bucket: str, object_key: str):
+async def get_raw_asset(
+    bucket: str,
+    object_key: str,
+    db: AsyncSession = Depends(get_async_db)
+):
     """Serve asset content directly via API gateway."""
     storage = get_storage_adapter()
     if storage.object_exists(bucket, object_key):
@@ -52,28 +59,27 @@ async def get_raw_asset(bucket: str, object_key: str):
     # Try to resolve project context from object_key or DB
     project_title = "Fídíò Creative Project"
     try:
-        async with db as session:
-            if "renders" in object_key or "renders" in bucket:
-                q = select(Render).where(Render.object_key == object_key)
-                res = await session.execute(q)
-                r_item = res.scalar_one_or_none()
-                if r_item:
-                    pq = select(Project).where(Project.id == r_item.project_id)
-                    pres = await session.execute(pq)
-                    proj = pres.scalar_one_or_none()
-                    if proj and proj.name:
-                        project_title = proj.name
-            else:
-                q = select(MediaAsset).where(MediaAsset.object_key == object_key)
-                res = await session.execute(q)
-                a_item = res.scalar_one_or_none()
-                if a_item:
-                    pq = select(Project).where(Project.id == a_item.project_id)
-                    pres = await session.execute(pq)
-                    proj = pres.scalar_one_or_none()
-                    if proj and proj.name:
-                        project_title = proj.name
-    except Exception:
+        if "renders" in object_key or "renders" in bucket:
+            q = select(Render).where(Render.object_key == object_key)
+            res = await db.execute(q)
+            r_item = res.scalars().first()
+            if r_item:
+                pq = select(Project).where(Project.id == r_item.project_id)
+                pres = await db.execute(pq)
+                proj = pres.scalars().first()
+                if proj and proj.name:
+                    project_title = proj.name
+        else:
+            q = select(MediaAsset).where(MediaAsset.object_key == object_key)
+            res = await db.execute(q)
+            a_item = res.scalars().first()
+            if a_item:
+                pq = select(Project).where(Project.id == a_item.project_id)
+                pres = await db.execute(pq)
+                proj = pres.scalars().first()
+                if proj and proj.name:
+                    project_title = proj.name
+    except Exception as e:
         pass
 
     safe_title = project_title.replace("'", "").replace(":", " -")[:60]
@@ -83,23 +89,25 @@ async def get_raw_asset(bucket: str, object_key: str):
         custom_mp4_path = f"/tmp/fidio_render_{cache_key}.mp4"
         
         if not os.path.exists(custom_mp4_path):
+            ffmpeg_bin = shutil.which("ffmpeg") or "/usr/bin/ffmpeg"
             try:
                 cmd = [
-                    "ffmpeg", "-y",
+                    ffmpeg_bin, "-y",
                     "-f", "lavfi", "-i", "color=c=0x110e24:s=1280x720:d=15:r=30",
                     "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
                     "-t", "15",
                     "-vf", (
-                        f"drawtext=text='FÍDÍÒ AI CINEMATIC GENERATION':fontcolor=0xa855f7:fontsize=30:x=(w-text_w)/2:y=180,"
-                        f"drawtext=text='PROMPT: {safe_title}':fontcolor=0xffffff:fontsize=26:x=(w-text_w)/2:y=260,"
-                        f"drawtext=text='Multi-Scene Visual & Audio Composition • 1080p':fontcolor=0x94a3b8:fontsize=20:x=(w-text_w)/2:y=330,"
-                        f"drawtext=text='✨ FINAL RENDER EXPORT READY':fontcolor=0x10b981:fontsize=22:x=(w-text_w)/2:y=420"
+                        f"drawtext=text='FÍDÍÒ AI CINEMATIC GENERATION':fontcolor=purple:fontsize=30:x=(w-text_w)/2:y=180,"
+                        f"drawtext=text='PROMPT: {safe_title}':fontcolor=white:fontsize=24:x=(w-text_w)/2:y=260,"
+                        f"drawtext=text='Multi-Scene Visual & Audio Composition • 1080p':fontcolor=cyan:fontsize=20:x=(w-text_w)/2:y=330,"
+                        f"drawtext=text='✨ FINAL RENDER EXPORT READY':fontcolor=green:fontsize=22:x=(w-text_w)/2:y=420"
                     ),
                     "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
                     custom_mp4_path
                 ]
                 subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            except Exception:
+            except Exception as e:
+                logger.warning(f"Error rendering dynamic video: {e}")
                 custom_mp4_path = SAMPLE_MP4_PATH
 
         if os.path.exists(custom_mp4_path):
