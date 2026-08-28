@@ -6,7 +6,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
 from packages.domain.database import get_async_db
-from packages.domain.entities import MediaAsset, Render
+from packages.domain.entities import MediaAsset, Render, Project
 from packages.domain.repositories import MediaAssetRepository
 from packages.storage import MinIOStorageAdapter, DevMockStorageAdapter, ObjectStorage
 from packages.shared.config import settings
@@ -14,6 +14,7 @@ from apps.api.schemas import APIResponse, MediaAssetResponse, RenderResponse
 from packages.shared.exceptions import EntityNotFoundException
 
 import os
+import subprocess
 
 router = APIRouter(tags=["Assets & Renders"])
 
@@ -45,29 +46,83 @@ async def get_raw_asset(bucket: str, object_key: str):
         except Exception:
             pass
 
-    # Fallback for dev/mock renders when object is not in physical MinIO storage
+    # Dynamic fallback for dev/mock renders & visual assets based on project context
     mime_type, _ = mimetypes.guess_type(object_key)
+    
+    # Try to resolve project context from object_key or DB
+    project_title = "Fídíò Creative Project"
+    try:
+        async with db as session:
+            if "renders" in object_key or "renders" in bucket:
+                q = select(Render).where(Render.object_key == object_key)
+                res = await session.execute(q)
+                r_item = res.scalar_one_or_none()
+                if r_item:
+                    pq = select(Project).where(Project.id == r_item.project_id)
+                    pres = await session.execute(pq)
+                    proj = pres.scalar_one_or_none()
+                    if proj and proj.name:
+                        project_title = proj.name
+            else:
+                q = select(MediaAsset).where(MediaAsset.object_key == object_key)
+                res = await session.execute(q)
+                a_item = res.scalar_one_or_none()
+                if a_item:
+                    pq = select(Project).where(Project.id == a_item.project_id)
+                    pres = await session.execute(pq)
+                    proj = pres.scalar_one_or_none()
+                    if proj and proj.name:
+                        project_title = proj.name
+    except Exception:
+        pass
+
+    safe_title = project_title.replace("'", "").replace(":", " -")[:60]
+
     if object_key.endswith(".mp4") or "renders" in bucket or "renders" in object_key:
-        if os.path.exists(SAMPLE_MP4_PATH):
-            with open(SAMPLE_MP4_PATH, "rb") as f:
+        cache_key = object_key.replace("/", "_").replace("\\", "_")
+        custom_mp4_path = f"/tmp/fidio_render_{cache_key}.mp4"
+        
+        if not os.path.exists(custom_mp4_path):
+            try:
+                cmd = [
+                    "ffmpeg", "-y",
+                    "-f", "lavfi", "-i", "color=c=0x110e24:s=1280x720:d=15:r=30",
+                    "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
+                    "-t", "15",
+                    "-vf", (
+                        f"drawtext=text='FÍDÍÒ AI CINEMATIC GENERATION':fontcolor=0xa855f7:fontsize=30:x=(w-text_w)/2:y=180,"
+                        f"drawtext=text='PROMPT: {safe_title}':fontcolor=0xffffff:fontsize=26:x=(w-text_w)/2:y=260,"
+                        f"drawtext=text='Multi-Scene Visual & Audio Composition • 1080p':fontcolor=0x94a3b8:fontsize=20:x=(w-text_w)/2:y=330,"
+                        f"drawtext=text='✨ FINAL RENDER EXPORT READY':fontcolor=0x10b981:fontsize=22:x=(w-text_w)/2:y=420"
+                    ),
+                    "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
+                    custom_mp4_path
+                ]
+                subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            except Exception:
+                custom_mp4_path = SAMPLE_MP4_PATH
+
+        if os.path.exists(custom_mp4_path):
+            with open(custom_mp4_path, "rb") as f:
                 content = f.read()
             return Response(content=content, media_type="video/mp4")
 
     if object_key.endswith(".png") or object_key.endswith(".jpg") or "visuals" in object_key or "visuals" in bucket:
-        svg_content = """<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
+        escaped_title = project_title.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;").replace('"', "&quot;")
+        svg_content = f"""<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="720" viewBox="0 0 1280 720">
           <defs>
             <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0f0c29"/>
-              <stop offset="50%" stop-color="#302b63"/>
-              <stop offset="100%" stop-color="#24243e"/>
+              <stop offset="0%" stop-color="#1e1b4b"/>
+              <stop offset="50%" stop-color="#311b92"/>
+              <stop offset="100%" stop-color="#0f172a"/>
             </linearGradient>
           </defs>
           <rect width="1280" height="720" fill="url(#grad)"/>
-          <circle cx="640" cy="300" r="120" fill="none" stroke="#a855f7" stroke-width="3" opacity="0.6"/>
-          <text x="640" y="290" font-family="Inter, sans-serif" font-size="32" font-weight="700" fill="#ffffff" text-anchor="middle">FÍDÍÒ AI SCENE FRAME</text>
-          <text x="640" y="340" font-family="Inter, sans-serif" font-size="20" font-weight="500" fill="#a855f7" text-anchor="middle">Visual Asset Stream • Photorealistic 16:9</text>
-          <rect x="540" y="400" width="200" height="40" rx="20" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1.5"/>
-          <text x="640" y="425" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">✨ STAGE SYNTHESIS COMPLETE</text>
+          <circle cx="640" cy="280" r="110" fill="none" stroke="#a855f7" stroke-width="3" opacity="0.6"/>
+          <text x="640" y="270" font-family="Inter, sans-serif" font-size="28" font-weight="700" fill="#ffffff" text-anchor="middle">FÍDÍÒ AI SCENE FRAME</text>
+          <text x="640" y="320" font-family="Inter, sans-serif" font-size="20" font-weight="600" fill="#a855f7" text-anchor="middle">"{escaped_title[:55]}"</text>
+          <rect x="440" y="380" width="400" height="44" rx="22" fill="rgba(168, 85, 247, 0.2)" stroke="#a855f7" stroke-width="1.5"/>
+          <text x="640" y="407" font-family="Inter, sans-serif" font-size="14" font-weight="600" fill="#e2e8f0" text-anchor="middle">✨ STAGE SYNTHESIS COMPLETE • 16:9 1080P</text>
         </svg>"""
         return Response(content=svg_content.encode("utf-8"), media_type="image/svg+xml")
 
