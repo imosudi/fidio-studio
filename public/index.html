@@ -1435,7 +1435,7 @@
 
       scenesGrid.innerHTML = assets.map((a, i) => {
         const resolvedUrl = resolveAssetUrl(a.download_url);
-        const isImage = a.asset_type.toLowerCase().includes('image') || a.asset_type.toLowerCase().includes('visual') || a.object_key.endsWith('.png') || a.object_key.endsWith('.jpg');
+        const isImage = a.asset_type.toLowerCase().includes('image') || a.asset_type.toLowerCase().includes('visual') || a.object_key.includes('visuals') || a.object_key.endsWith('.png') || a.object_key.endsWith('.jpg');
         const isAudio = a.asset_type.toLowerCase().includes('audio') || a.asset_type.toLowerCase().includes('narration') || a.object_key.endsWith('.mp3') || a.object_key.endsWith('.wav');
 
         return `
