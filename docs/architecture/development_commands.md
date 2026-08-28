@@ -27,7 +27,7 @@ Before running Fídíò Studio locally, verify your system has:
    POSTGRES_PORT=5432
    POSTGRES_DB=fidio-studio
    POSTGRES_USER=fidio-studio
-   POSTGRES_PASSWORD=OmolileOtilile
+   POSTGRES_PASSWORD=your_password
    ```
 
 ---
@@ -92,7 +92,7 @@ If using a local PostgreSQL instance:
 
 ```bash
 # Create database and user
-sudo -u postgres psql -c "CREATE USER \"fidio-studio\" WITH PASSWORD 'OmolileOtilile';"
+sudo -u postgres psql -c "CREATE USER \"fidio-studio\" WITH PASSWORD 'your_password';"
 sudo -u postgres psql -c "CREATE DATABASE \"fidio-studio\" OWNER \"fidio-studio\";"
 sudo -u postgres psql -c "GRANT ALL PRIVILEGES ON DATABASE \"fidio-studio\" TO \"fidio-studio\";"
 

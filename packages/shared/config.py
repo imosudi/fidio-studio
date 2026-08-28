@@ -22,7 +22,7 @@ class Settings(BaseSettings):
     POSTGRES_PORT: int = 5432
     POSTGRES_DB: str = "fidio-studio"
     POSTGRES_USER: str = "fidio-studio"
-    POSTGRES_PASSWORD: str = "OmolileOtilile"
+    POSTGRES_PASSWORD: str = "postgres"
     POSTGRES_SSLMODE: str = "prefer"
 
     # Redis Configuration
