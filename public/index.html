@@ -857,16 +857,29 @@
     }
 
     async function fetchRenderDetails(projectId) {
-      // Create synthetic or presigned video source for completed video preview
       const renderHub = document.getElementById('renderHub');
       const videoPlayer = document.getElementById('mainVideoPlayer');
+      const videoSource = document.getElementById('videoSource');
       const btnDownload = document.getElementById('btnDownloadRender');
 
       renderHub.style.display = 'block';
-      
-      // Presigned or sample video render URL
-      const mockRenderUrl = `${API_BASE}/projects/${projectId}/assets`;
-      btnDownload.href = mockRenderUrl;
+
+      try {
+        const res = await fetch(`${API_BASE}/projects/${projectId}/render`);
+        const json = await res.json();
+        let renderUrl = `${API_BASE}/assets/raw/fidio-renders/renders/project_${projectId}.mp4`;
+        if (json.success && json.data && json.data.download_url) {
+          renderUrl = json.data.download_url;
+        }
+        if (videoSource) videoSource.src = renderUrl;
+        if (videoPlayer) {
+          videoPlayer.src = renderUrl;
+          videoPlayer.load();
+        }
+        if (btnDownload) btnDownload.href = renderUrl;
+      } catch (err) {
+        console.error('Error fetching render details:', err);
+      }
     }
 
     function resolveAssetUrl(url) {

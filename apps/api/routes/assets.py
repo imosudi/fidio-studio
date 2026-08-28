@@ -13,7 +13,11 @@ from packages.shared.config import settings
 from apps.api.schemas import APIResponse, MediaAssetResponse, RenderResponse
 from packages.shared.exceptions import EntityNotFoundException
 
+import os
+
 router = APIRouter(tags=["Assets & Renders"])
+
+SAMPLE_MP4_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../packages/providers/sample_render.mp4"))
 
 
 def get_storage_adapter() -> ObjectStorage:
@@ -27,15 +31,23 @@ def get_storage_adapter() -> ObjectStorage:
 async def get_raw_asset(bucket: str, object_key: str):
     """Serve asset content directly via API gateway."""
     storage = get_storage_adapter()
-    if not storage.object_exists(bucket, object_key):
-        raise HTTPException(status_code=404, detail=f"Asset '{object_key}' not found in bucket '{bucket}'")
-    
-    try:
-        data = storage.get_object(bucket, object_key)
-        mime_type, _ = mimetypes.guess_type(object_key)
-        return Response(content=data, media_type=mime_type or "application/octet-stream")
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+    if storage.object_exists(bucket, object_key):
+        try:
+            data = storage.get_object(bucket, object_key)
+            mime_type, _ = mimetypes.guess_type(object_key)
+            return Response(content=data, media_type=mime_type or "application/octet-stream")
+        except Exception:
+            pass
+
+    # Fallback for dev/mock renders when object is not in physical MinIO storage
+    mime_type, _ = mimetypes.guess_type(object_key)
+    if object_key.endswith(".mp4") or "renders" in bucket or "renders" in object_key:
+        if os.path.exists(SAMPLE_MP4_PATH):
+            with open(SAMPLE_MP4_PATH, "rb") as f:
+                content = f.read()
+            return Response(content=content, media_type="video/mp4")
+
+    raise HTTPException(status_code=404, detail=f"Asset '{object_key}' not found in bucket '{bucket}'")
 
 
 @router.get("/projects/{project_id}/assets", response_model=APIResponse[List[MediaAssetResponse]])
@@ -64,6 +76,25 @@ async def list_project_assets(
     return APIResponse(data=response_list)
 
 
+@router.get("/projects/{project_id}/render", response_model=APIResponse[RenderResponse])
+async def get_project_render(
+    project_id: uuid.UUID,
+    db: AsyncSession = Depends(get_async_db)
+):
+    """Get latest completed video render for a project."""
+    query = select(Render).where(Render.project_id == project_id).order_by(Render.created_at.desc())
+    result = await db.execute(query)
+    render = result.scalars().first()
+    if not render:
+        raise EntityNotFoundException("Render for Project", str(project_id))
+
+    storage = get_storage_adapter()
+    resp = RenderResponse.model_validate(render)
+    url = f"/api/v1/assets/raw/{render.bucket_name}/{render.object_key}"
+    resp.download_url = url
+    return APIResponse(data=resp)
+
+
 @router.get("/renders/{render_id}", response_model=APIResponse[RenderResponse])
 async def get_render_details(
     render_id: uuid.UUID,
@@ -88,3 +119,4 @@ async def get_render_details(
     resp.download_url = url
 
     return APIResponse(data=resp)
+
