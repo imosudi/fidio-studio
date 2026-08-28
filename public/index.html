@@ -843,6 +843,14 @@
       btnDownload.href = mockRenderUrl;
     }
 
+    function resolveAssetUrl(url) {
+      if (!url) return '';
+      if (url.includes('localhost:9000') && window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1') {
+        return url.replace(/http:\/\/localhost:9000/, `${window.location.protocol}//${window.location.hostname}:9000`);
+      }
+      return url;
+    }
+
     function renderScenesAndAssets(assets) {
       if (!assets || assets.length === 0) {
         scenesGrid.innerHTML = `
@@ -859,7 +867,7 @@
             <div class="scene-title">Asset #${i+1} — ${a.asset_type}</div>
             <p class="scene-narration">Bucket: ${a.bucket_name}</p>
             <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem;">Key: ${escapeHtml(a.object_key)}</p>
-            ${a.download_url ? `<a href="${a.download_url}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.5rem;">View Signed Asset →</a>` : ''}
+            ${a.download_url ? `<a href="${resolveAssetUrl(a.download_url)}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.5rem;">View Signed Asset →</a>` : ''}
           </div>
         </div>
       `).join('');

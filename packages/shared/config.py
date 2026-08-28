@@ -1,6 +1,5 @@
-import os
 from typing import Optional
-from pydantic import Field
+from pydantic import Field, AliasChoices
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -33,7 +32,10 @@ class Settings(BaseSettings):
 
     # MinIO / S3 Configuration
     MINIO_ENDPOINT: str = "minio:9000"
-    MINIO_EXTERNAL_ENDPOINT: str = "http://localhost:9000"
+    MINIO_EXTERNAL_ENDPOINT: str = Field(
+        default="http://localhost:9000",
+        validation_alias=AliasChoices("MINIO_EXTERNAL_ENDPOINT", "MINIO_PUBLIC_URL")
+    )
     MINIO_ACCESS_KEY: str = "fidio-minio-admin"
     MINIO_SECRET_KEY: str = "fidio-minio-secret-key-2026"
     MINIO_BUCKET_MEDIA: str = "fidio-media"

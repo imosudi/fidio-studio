@@ -1,5 +1,6 @@
 from typing import Optional, Dict, Any
 from packages.storage.base import ObjectStorage
+from packages.shared.config import settings
 from packages.shared.exceptions import StorageException
 
 
@@ -56,4 +57,5 @@ class DevMockStorageAdapter(ObjectStorage):
         object_key: str,
         expires_in_seconds: int = 3600
     ) -> str:
-        return f"http://localhost:9000/{bucket}/{object_key}?token=mock_presigned_url_token"
+        base_url = settings.MINIO_EXTERNAL_ENDPOINT.rstrip("/")
+        return f"{base_url}/{bucket}/{object_key}?token=mock_presigned_url_token"
