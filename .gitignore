@@ -18,3 +18,15 @@ ENV/
 .env
 *.pem
 *.log
+
+# Agent Instructions & Governance Documentation
+AGENTS.md
+CONTRIBUTING.md
+SECURITY.md
+implemetation_instructions/
+implementation_instructions/
+UX-Review-Gate/
+docs/architecture/review_gate_*
+.env.example
+configuration.txt
+
