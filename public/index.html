@@ -798,8 +798,8 @@
       </a>
       <ul class="nav-links">
         <li><a class="nav-link active" onclick="showDashboard()">Studio Workspace</a></li>
-        <li><a class="nav-link" href="#features" onclick="document.getElementById('featuresSection').scrollIntoView({behavior: 'smooth'})">AI Engine</a></li>
-        <li><a class="nav-link" href="/docs/api/api_reference.md" target="_blank">API Specs</a></li>
+        <li><a class="nav-link" href="#features" onclick="document.getElementById('featuresSection').scrollIntoView({behavior: 'smooth'})">Features</a></li>
+        <li><a class="nav-link" href="#features" onclick="document.getElementById('featuresSection').scrollIntoView({behavior: 'smooth'})">Engine Capabilities</a></li>
       </ul>
       <div style="display: flex; align-items: center; gap: 1.25rem;">
         <div class="status-badge">
@@ -817,10 +817,10 @@
   <section class="hero-section" id="heroSection">
     <div class="hero-container">
       <div class="hero-badge-pill">
-        <span>✨ FÍDÍÒ ENGINE 2.0</span> • MULTI-MODAL AI CREATIVE PRODUCTION
+        <span>✨ FÍDÍÒ ENGINE 2.0</span> • AUTOMATED AI VIDEO PRODUCTION
       </div>
       <h1 class="hero-title">Imagine. Create. <span class="gradient-text">Fídíò.</span></h1>
-      <p class="hero-subtitle">Transform text ideas into production-ready video content with AI scene understanding, natural voice synthesis, and FFmpeg multi-track composition.</p>
+      <p class="hero-subtitle">Transform text ideas into cinematic, production-ready video content with multi-scene AI storyboarding, photorealistic visual generation, and studio voiceovers.</p>
       
       <!-- Embedded Floating Hero Prompt Studio Bar -->
       <div class="hero-prompt-card">
@@ -865,49 +865,49 @@
   <div class="stats-bar">
     <div class="stats-container">
       <div>
-        <div class="stat-val">100%</div>
-        <div class="stat-lbl">Async Execution Pipeline</div>
+        <div class="stat-val">4K Ultra HD</div>
+        <div class="stat-lbl">Production Video Export</div>
       </div>
       <div>
-        <div class="stat-val">&lt; 100ms</div>
-        <div class="stat-lbl">API Dispatch Latency</div>
+        <div class="stat-val">Multi-Scene</div>
+        <div class="stat-lbl">Automatic Storyboarding</div>
       </div>
       <div>
-        <div class="stat-val">1080p / 4K</div>
-        <div class="stat-lbl">FFmpeg Render Output</div>
+        <div class="stat-val">Studio Voice</div>
+        <div class="stat-lbl">Natural Speech Synthesis</div>
       </div>
       <div>
-        <div class="stat-val">4-Stage</div>
-        <div class="stat-lbl">AI Storyboard Planner</div>
+        <div class="stat-val">Real-Time</div>
+        <div class="stat-lbl">AI Render Engine</div>
       </div>
     </div>
   </div>
 
-  <!-- Feature Capabilities Grid (BytePlus Style) -->
+  <!-- Feature Capabilities Grid -->
   <section class="features-section" id="featuresSection">
-    <h2 class="section-title">Powered by Modular AI Infrastructure</h2>
-    <p class="section-subtitle">Fídíò integrates LLM creative planning, visual & audio asset generation, and automated FFmpeg multi-track composition into a single pipeline.</p>
+    <h2 class="section-title">Powered by Fídíò Generation Engine</h2>
+    <p class="section-subtitle">Fídíò seamlessly combines creative scriptwriting, multi-modal asset generation, studio narration, and high-resolution video composition.</p>
     
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🧠</div>
-        <h3 class="feature-title">Structured LLM Planner</h3>
-        <p class="feature-desc">OpenRouter AI engine decomposes high-level creative prompts into multi-scene visual prompts, camera directions, and voice scripts.</p>
+        <h3 class="feature-title">Intelligent Storyboarding</h3>
+        <p class="feature-desc">Decomposes creative text prompts into structured multi-scene scripts, camera angles, and visual framing directions.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🎨</div>
-        <h3 class="feature-title">Multi-Modal Generation</h3>
-        <p class="feature-desc">Parallel AI model adapters synthesize key visual scenes, background music, and natural voice narration audio clips.</p>
+        <h3 class="feature-title">Multi-Modal Synthesis</h3>
+        <p class="feature-desc">Generates high-fidelity visual frames and atmospheric soundscapes tailored to your chosen artistic style.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <h3 class="feature-title">Studio Voice Mastering</h3>
+        <p class="feature-desc">Pairs visual scenes with realistic neural voiceover narration and studio-grade audio track balancing.</p>
       </div>
       <div class="feature-card">
         <div class="feature-icon">⚡</div>
-        <h3 class="feature-title">FFmpeg Composition</h3>
-        <p class="feature-desc">Sub-second video stitching, audio-visual multiplexing, aspect scaling, and color processing inside isolated worker processes.</p>
-      </div>
-      <div class="feature-card">
-        <div class="feature-icon">☁️</div>
-        <h3 class="feature-title">MinIO Object Storage</h3>
-        <p class="feature-desc">S3-compatible persistent storage layer managing raw media assets and final renders with secure, time-bound presigned URLs.</p>
+        <h3 class="feature-title">Automated Composition</h3>
+        <p class="feature-desc">Multiplexes visual frames, voice tracks, and audio timing into crisp 1080p and 4K MP4 exports ready for sharing.</p>
       </div>
     </div>
   </section>
@@ -1441,11 +1441,10 @@
         return `
           <div class="scene-card">
             ${isImage && resolvedUrl ? `<img src="${resolvedUrl}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 0.75rem;" alt="Scene preview" onerror="this.style.display='none'">` : ''}
-            <div class="scene-title">Asset #${i+1} — ${escapeHtml(a.asset_type)}</div>
-            <p class="scene-narration">Bucket: ${escapeHtml(a.bucket_name)}</p>
-            <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem; word-break: break-all;">Key: ${escapeHtml(a.object_key)}</p>
+            <div class="scene-title">Scene Track #${i+1} — ${escapeHtml(a.asset_type.toUpperCase())}</div>
+            <p class="scene-narration" style="font-size: 0.8125rem; color: var(--text-muted); margin-bottom: 0.5rem;">Production Asset Stream</p>
             ${isAudio && resolvedUrl ? `<audio controls src="${resolvedUrl}" style="width: 100%; margin-top: 0.5rem; height: 36px;"></audio>` : ''}
-            ${resolvedUrl ? `<a href="${resolvedUrl}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.5rem;">View Signed Asset →</a>` : ''}
+            ${resolvedUrl ? `<a href="${resolvedUrl}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.5rem;">Preview Asset Clip →</a>` : ''}
           </div>
         `;
       }).join('');
