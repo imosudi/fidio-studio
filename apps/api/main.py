@@ -53,13 +53,17 @@ async def security_and_correlation_middleware(request: Request, call_next):
     response: Response = await call_next(request)
     duration_ms = round((time.time() - start_time) * 1000, 2)
 
-    # Inject Security Headers
+    # Inject Security Headers & Record Telemetry Metrics
     response.headers["X-Correlation-ID"] = correlation_id
     response.headers["X-Content-Type-Options"] = "nosniff"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
+    from packages.shared.telemetry import metrics
+    metrics.inc_counter("http_requests_total", labels={"method": request.method, "status": str(response.status_code)})
+    metrics.observe_histogram("http_request_duration_seconds", value=duration_ms / 1000.0, labels={"method": request.method})
 
     logger.info(
         f"{request.method} {request.url.path} -> {response.status_code} ({duration_ms}ms)",
@@ -121,6 +125,13 @@ async def health_check():
         "environment": settings.APP_ENV,
         "version": "0.1.0"
     }
+
+
+@app.get("/metrics", tags=["Observability"])
+async def get_prometheus_metrics():
+    """Prometheus metrics scraper endpoint."""
+    from packages.shared.telemetry import metrics
+    return Response(content=metrics.generate_prometheus_text(), media_type="text/plain; version=0.0.4")
 
 
 @app.get("/", tags=["Root"])

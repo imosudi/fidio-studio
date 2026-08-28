@@ -58,6 +58,7 @@ class PipelineOrchestrator:
         req_result = await db_session.execute(req_query)
         gen_request = req_result.scalar_one()
 
+        start_time = time.time()
         try:
             # Stage 1: AI Planning
             await self._check_cancellation(job, db_session)
@@ -83,13 +84,22 @@ class PipelineOrchestrator:
                 progress=100
             )
             await db_session.commit()
-            logger.info(f"Successfully completed GenerationJob ID={job.id}")
+            
+            elapsed_s = time.time() - start_time
+            from packages.shared.telemetry import metrics
+            metrics.inc_counter("fidio_jobs_total", labels={"status": "COMPLETED"})
+            metrics.observe_histogram("fidio_job_duration_seconds", value=elapsed_s, labels={"stage": "FULL"})
+
+            logger.info(f"Successfully completed GenerationJob ID={job.id} in {elapsed_s:.2f}s")
             return job
 
         except JobCancelledException:
             logger.warning(f"Pipeline cancelled for GenerationJob ID={job.id}")
             JobStateMachine.transition_to(job, JobStatus.CANCELLED, stage="CANCELLED")
             await db_session.commit()
+
+            from packages.shared.telemetry import metrics
+            metrics.inc_counter("fidio_jobs_total", labels={"status": "CANCELLED"})
             return job
 
         except Exception as e:
@@ -102,6 +112,9 @@ class PipelineOrchestrator:
                 error_message=str(e)
             )
             await db_session.commit()
+
+            from packages.shared.telemetry import metrics
+            metrics.inc_counter("fidio_jobs_total", labels={"status": "FAILED"})
             raise
 
     async def _check_cancellation(self, job: GenerationJob, db_session: AsyncSession):
