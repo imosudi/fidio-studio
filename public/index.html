@@ -426,17 +426,43 @@
       font-style: italic;
     }
 
-    /* Empty States */
-    .empty-state {
-      text-align: center;
-      padding: 4rem 2rem;
-      background: var(--bg-surface);
-      border: 1px dashed var(--border-glow);
-      border-radius: 1rem;
+    /* Responsive & Viewport Media Queries (1280px, 1440px, 1920px+) */
+    @media (min-width: 1440px) {
+      main.app-content, .nav-container {
+        max-width: 1400px;
+      }
+      .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+      }
+      .scenes-grid {
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      }
     }
-    .empty-icon {
-      font-size: 3rem;
-      margin-bottom: 1rem;
+
+    @media (min-width: 1920px) {
+      main.app-content, .nav-container {
+        max-width: 1680px;
+      }
+      .dashboard-title {
+        font-size: 2.25rem;
+      }
+      .projects-grid {
+        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+      .style-selector {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      .modal-card {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
