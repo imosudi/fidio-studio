@@ -57,5 +57,4 @@ class DevMockStorageAdapter(ObjectStorage):
         object_key: str,
         expires_in_seconds: int = 3600
     ) -> str:
-        base_url = settings.MINIO_EXTERNAL_ENDPOINT.rstrip("/")
-        return f"{base_url}/{bucket}/{object_key}?token=mock_presigned_url_token"
+        return f"/api/v1/assets/raw/{bucket}/{object_key}?token=mock_presigned_url_token"

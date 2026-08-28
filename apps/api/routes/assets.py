@@ -1,6 +1,7 @@
 import uuid
+import mimetypes
 from typing import List
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Response, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 
@@ -22,6 +23,21 @@ def get_storage_adapter() -> ObjectStorage:
         return DevMockStorageAdapter()
 
 
+@router.get("/assets/raw/{bucket}/{object_key:path}")
+async def get_raw_asset(bucket: str, object_key: str):
+    """Serve asset content directly via API gateway."""
+    storage = get_storage_adapter()
+    if not storage.object_exists(bucket, object_key):
+        raise HTTPException(status_code=404, detail=f"Asset '{object_key}' not found in bucket '{bucket}'")
+    
+    try:
+        data = storage.get_object(bucket, object_key)
+        mime_type, _ = mimetypes.guess_type(object_key)
+        return Response(content=data, media_type=mime_type or "application/octet-stream")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.get("/projects/{project_id}/assets", response_model=APIResponse[List[MediaAssetResponse]])
 async def list_project_assets(
     project_id: uuid.UUID,
@@ -35,11 +51,14 @@ async def list_project_assets(
     response_list = []
     for asset in assets:
         resp = MediaAssetResponse.model_validate(asset)
-        resp.download_url = storage.generate_presigned_url(
+        url = storage.generate_presigned_url(
             bucket=asset.bucket_name,
             object_key=asset.object_key,
             expires_in_seconds=3600
         )
+        if url.startswith("http://localhost:9000") or ":9000" in url or isinstance(storage, DevMockStorageAdapter):
+            url = f"/api/v1/assets/raw/{asset.bucket_name}/{asset.object_key}"
+        resp.download_url = url
         response_list.append(resp)
 
     return APIResponse(data=response_list)
@@ -59,10 +78,13 @@ async def get_render_details(
 
     storage = get_storage_adapter()
     resp = RenderResponse.model_validate(render)
-    resp.download_url = storage.generate_presigned_url(
+    url = storage.generate_presigned_url(
         bucket=render.bucket_name,
         object_key=render.object_key,
         expires_in_seconds=7200
     )
+    if url.startswith("http://localhost:9000") or ":9000" in url or isinstance(storage, DevMockStorageAdapter):
+        url = f"/api/v1/assets/raw/{render.bucket_name}/{render.object_key}"
+    resp.download_url = url
 
     return APIResponse(data=resp)
