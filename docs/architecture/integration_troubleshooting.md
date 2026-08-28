@@ -26,8 +26,8 @@
 
 | Environment Variable | Required Service | Default Local | Production Staging | Description |
 | :--- | :--- | :--- | :--- | :--- |
-| `DATABASE_URL` | API / Worker | `postgresql+asyncpg://...` | `postgresql+asyncpg://mosud_fidio:...@104.207.88.53:5432/fidio_db` | Async SQLAlchemy PostgreSQL connection string |
-| `MINIO_ENDPOINT` | Storage Adapter | `http://localhost:9000` | `http://104.207.88.53:9000` | Internal MinIO S3 API endpoint |
+| `DATABASE_URL` | API / Worker | `postgresql+asyncpg://...` | `postgresql+asyncpg://your_user:your_password@your_host:5432/fidio_db` | Async SQLAlchemy PostgreSQL connection string |
+| `MINIO_ENDPOINT` | Storage Adapter | `http://localhost:9000` | `http://your_minio_host:9000` | Internal MinIO S3 API endpoint |
 | `MINIO_EXTERNAL_ENDPOINT` | API Presigned URLs | `http://localhost:9000` | `https://fidio.site` | Client-facing S3 presigned URL host |
 | `OPENROUTER_API_KEY` | AI Planner | `dev_mock_key` | Real Key / `dev_mock_key` | OpenRouter API Key for live LLM planning |
 | `APP_ENV` | Global | `development` | `production` | Environment mode (`development`, `staging`, `production`) |

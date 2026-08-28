@@ -128,7 +128,7 @@ docker compose up -d --build
 | :--- | :--- | :--- |
 | `APP_ENV` | `development` | Runtime environment (`development`, `staging`, `production`) |
 | `DATABASE_URL` | `postgresql+asyncpg://...` | PostgreSQL connection string |
-| `MINIO_ENDPOINT` | `104.207.88.53:9000` | S3 / MinIO server endpoint |
+| `MINIO_ENDPOINT` | `minio:9000` | S3 / MinIO server endpoint |
 | `MINIO_ACCESS_KEY` | `minioadmin` | S3 Access Key ID |
 | `MINIO_SECRET_KEY` | `minioadmin` | S3 Secret Access Key |
 | `OPENROUTER_API_KEY` | `sk-or-v1-...` | OpenRouter API Key for LLM planning |

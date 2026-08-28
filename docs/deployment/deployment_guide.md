@@ -20,14 +20,14 @@
 ### `/etc/systemd/system/fidio-api.service`
 ```ini
 [Unit]
-Description=Fídíò Studio REST API Service
+Description=${APP_SERVICE_NAME}
 After=network.target
 
 [Service]
-User=mosud
-WorkingDirectory=/opt/fidio
-EnvironmentFile=/opt/fidio/.env
-ExecStart=/opt/fidio/.venv/bin/uvicorn apps.api.main:app --host 127.0.0.1 --port 8000 --workers 4
+User=${DEPLOY_USER}
+WorkingDirectory=${DEPLOY_PATH}
+EnvironmentFile=${DEPLOY_PATH}/.env
+ExecStart=${DEPLOY_PATH}/.venv/bin/uvicorn apps.api.main:app --host 127.0.0.1 --port 8000 --workers 4
 Restart=always
 RestartSec=5
 
@@ -38,14 +38,14 @@ WantedBy=multi-user.target
 ### `/etc/systemd/system/fidio-worker.service`
 ```ini
 [Unit]
-Description=Fídíò Studio Async Pipeline Worker
+Description=${WORKER_SERVICE_NAME}
 After=network.target
 
 [Service]
-User=mosud
-WorkingDirectory=/opt/fidio
-EnvironmentFile=/opt/fidio/.env
-ExecStart=/opt/fidio/.venv/bin/python services/worker/main.py
+User=${DEPLOY_USER}
+WorkingDirectory=${DEPLOY_PATH}
+EnvironmentFile=${DEPLOY_PATH}/.env
+ExecStart=${DEPLOY_PATH}/.venv/bin/python services/worker/main.py
 Restart=always
 RestartSec=5
 
@@ -58,15 +58,15 @@ WantedBy=multi-user.target
 ## 3. Operational Deployment Steps
 
 ```bash
-# SSH into production server
-ssh mosud@104.207.88.53
+# SSH into production server (configured via DEPLOY_USER and DEPLOY_HOST)
+ssh ${DEPLOY_USER}@${DEPLOY_HOST}
 
-# Pull latest code or check status
-cd /opt/fidio
+# Navigate to application deployment directory
+cd ${DEPLOY_PATH}
 git status
 
 # Apply database migrations
-PYTHONPATH=. /opt/fidio/.venv/bin/alembic upgrade head
+PYTHONPATH=. ${DEPLOY_PATH}/.venv/bin/alembic upgrade head
 
 # Restart services
 sudo systemctl restart fidio-api fidio-worker
