@@ -31,8 +31,9 @@
       --accent-red: #EF4444;
 
       --gradient-brand: linear-gradient(135deg, #6366F1 0%, #9333EA 50%, #EC4899 100%);
+      --gradient-text: linear-gradient(135deg, #A855F7 0%, #EC4899 50%, #3B82F6 100%);
       --gradient-surface: linear-gradient(180deg, rgba(25, 33, 50, 0.8) 0%, rgba(15, 20, 32, 0.9) 100%);
-      --shadow-glow: 0 0 25px rgba(99, 102, 241, 0.25);
+      --shadow-glow: 0 0 30px rgba(99, 102, 241, 0.3);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -44,6 +45,7 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
+      overflow-x: hidden;
     }
 
     /* Layout Containers */
@@ -56,7 +58,7 @@
       z-index: 50;
     }
     .nav-container {
-      max-width: 1280px;
+      max-width: 1380px;
       margin: 0 auto;
       padding: 1rem 1.5rem;
       display: flex;
@@ -84,6 +86,24 @@
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+    .nav-link {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.9375rem;
+      font-weight: 500;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+    .nav-link:hover, .nav-link.active {
+      color: var(--text-main);
+    }
+
     .status-badge {
       display: flex;
       align-items: center;
@@ -115,7 +135,7 @@
       color: white;
       font-weight: 600;
       font-size: 0.9375rem;
-      padding: 0.65rem 1.25rem;
+      padding: 0.65rem 1.35rem;
       border-radius: 0.5rem;
       border: none;
       cursor: pointer;
@@ -154,16 +174,256 @@
       border-color: var(--border-glow);
     }
 
-    /* Main Container */
-    main.app-content {
-      max-width: 1280px;
-      width: 100%;
+    /* BytePlus Style Hero Section */
+    .hero-section {
+      position: relative;
+      padding: 3.5rem 1.5rem 4rem 1.5rem;
+      background: radial-gradient(circle at 50% 0%, rgba(147, 51, 234, 0.15) 0%, rgba(11, 15, 25, 0) 70%);
+      text-align: center;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .hero-container {
+      max-width: 1080px;
       margin: 0 auto;
-      padding: 2rem 1.5rem 4rem 1.5rem;
-      flex: 1;
+    }
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
+      background: rgba(147, 51, 234, 0.12);
+      border: 1px solid rgba(147, 51, 234, 0.35);
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: #C084FC;
+      margin-bottom: 1.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .hero-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 3.25rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1rem;
+    }
+    .gradient-text {
+      background: var(--gradient-text);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero-subtitle {
+      font-size: 1.125rem;
+      color: var(--text-muted);
+      max-width: 760px;
+      margin: 0 auto 2.5rem auto;
+      line-height: 1.6;
     }
 
-    /* Dashboard Header */
+    /* Embedded Floating Prompt Creator Card */
+    .hero-prompt-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-glow);
+      border-radius: 1.25rem;
+      padding: 1.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 30px rgba(99, 102, 241, 0.15);
+      text-align: left;
+      margin-bottom: 2rem;
+      transition: border-color 0.3s ease;
+    }
+    .hero-prompt-card:focus-within {
+      border-color: var(--accent-violet);
+    }
+    .prompt-textarea {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--text-main);
+      font-family: inherit;
+      font-size: 1.05rem;
+      resize: none;
+      min-height: 70px;
+      margin-bottom: 1.25rem;
+    }
+    .prompt-textarea::placeholder {
+      color: var(--text-dim);
+    }
+    .prompt-controls-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-color);
+    }
+    .style-chip-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    .style-chip {
+      padding: 0.4rem 0.85rem;
+      border-radius: 0.5rem;
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .style-chip:hover, .style-chip.selected {
+      background: rgba(99, 102, 241, 0.15);
+      border-color: var(--accent-violet);
+      color: white;
+    }
+    .select-pill {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.75rem;
+      color: var(--text-main);
+      font-size: 0.8125rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    /* Preset Chips Shortcut Row */
+    .preset-chips-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      gap: 0.65rem;
+    }
+    .preset-chip-title {
+      font-size: 0.8125rem;
+      color: var(--text-dim);
+      font-weight: 600;
+      margin-right: 0.5rem;
+    }
+    .preset-chip-item {
+      background: rgba(28, 36, 54, 0.6);
+      border: 1px solid var(--border-color);
+      border-radius: 9999px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .preset-chip-item:hover {
+      background: var(--bg-surface-elevated);
+      border-color: var(--accent-violet);
+      color: var(--text-main);
+      transform: translateY(-1px);
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      background: var(--bg-surface);
+      border-y: 1px solid var(--border-color);
+      padding: 1.5rem 0;
+    }
+    .stats-container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2rem;
+      text-align: center;
+    }
+    .stat-val {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+    .stat-lbl {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.2rem;
+    }
+
+    /* Feature Capabilities Grid (BytePlus Style) */
+    .features-section {
+      padding: 4rem 1.5rem;
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+    .section-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 0.5rem;
+    }
+    .section-subtitle {
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 1rem;
+      max-width: 640px;
+      margin: 0 auto 3rem auto;
+    }
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+    }
+    .feature-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 1rem;
+      padding: 1.75rem;
+      transition: all 0.25s ease;
+      position: relative;
+    }
+    .feature-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--border-glow);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+    }
+    .feature-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 0.75rem;
+      background: rgba(99, 102, 241, 0.12);
+      color: var(--accent-violet);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.25rem;
+    }
+    .feature-title {
+      font-family: 'Outfit', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+    }
+    .feature-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+    }
+
+    /* InVideo Style Project Workspace Dashboard */
+    main.app-content {
+      max-width: 1380px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 5rem 1.5rem;
+      flex: 1;
+    }
     .dashboard-header {
       display: flex;
       align-items: center;
@@ -172,25 +432,18 @@
     }
     .dashboard-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.75rem;
+      font-size: 1.85rem;
       font-weight: 700;
     }
-    .dashboard-subtitle {
-      color: var(--text-muted);
-      font-size: 0.9375rem;
-      margin-top: 0.25rem;
-    }
-
-    /* Project Cards Grid */
     .projects-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.75rem;
     }
     .project-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-color);
-      border-radius: 0.75rem;
+      border-radius: 1rem;
       padding: 1.5rem;
       cursor: pointer;
       transition: all 0.25s ease;
@@ -212,7 +465,7 @@
     .project-card:hover {
       transform: translateY(-3px);
       border-color: var(--border-glow);
-      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
     }
     .project-card:hover::before {
       opacity: 1;
@@ -226,7 +479,7 @@
     }
     .card-title {
       font-family: 'Outfit', sans-serif;
-      font-size: 1.15rem;
+      font-size: 1.2rem;
       font-weight: 600;
       color: var(--text-main);
     }
@@ -262,6 +515,133 @@
       color: var(--text-dim);
     }
 
+    /* InVideo Style Production Pipeline Stepper */
+    .pipeline-stepper {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+      margin: 1.5rem 0 2rem 0;
+      position: relative;
+    }
+    .step-node {
+      background: var(--bg-base);
+      border: 1px solid var(--border-color);
+      border-radius: 0.75rem;
+      padding: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      transition: all 0.3s ease;
+    }
+    .step-node.active {
+      border-color: var(--accent-violet);
+      background: rgba(99, 102, 241, 0.1);
+    }
+    .step-node.completed {
+      border-color: var(--accent-green);
+      background: rgba(16, 185, 129, 0.08);
+    }
+    .node-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--border-color);
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8125rem;
+      font-weight: 700;
+    }
+    .step-node.active .node-num {
+      background: var(--accent-violet);
+      color: white;
+    }
+    .step-node.completed .node-num {
+      background: var(--accent-green);
+      color: white;
+    }
+    .node-info {
+      display: flex;
+      flex-direction: column;
+    }
+    .node-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+    .node-sub {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    /* Dual-Column Studio Inspector Layout */
+    .studio-dual-layout {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 2rem;
+      align-items: start;
+    }
+
+    .video-player-container {
+      background: #000;
+      border-radius: 1rem;
+      overflow: hidden;
+      border: 1px solid var(--border-glow);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      margin-bottom: 1.5rem;
+    }
+    video.fidio-player {
+      width: 100%;
+      height: auto;
+      max-height: 480px;
+      display: block;
+    }
+
+    .meta-pills-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+    .meta-pill {
+      background: var(--bg-surface-elevated);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.4rem 0.85rem;
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    /* Scene Grid */
+    .scenes-grid {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .scene-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 0.875rem;
+      padding: 1.25rem;
+      transition: all 0.2s ease;
+    }
+    .scene-card:hover {
+      border-color: var(--border-glow);
+    }
+    .scene-title {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--accent-cyan);
+      margin-bottom: 0.5rem;
+    }
+    .scene-narration {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      font-style: italic;
+      margin-bottom: 0.75rem;
+    }
+
     /* Modal / New Project Flow */
     .modal-overlay {
       position: fixed;
@@ -284,7 +664,7 @@
     .modal-card {
       background: var(--bg-surface);
       border: 1px solid var(--border-glow);
-      border-radius: 1rem;
+      border-radius: 1.25rem;
       max-width: 640px;
       width: 100%;
       padding: 2rem;
@@ -353,115 +733,31 @@
       color: white;
     }
 
-    /* Progress & Inspector View */
-    .inspector-header {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 0.875rem;
-      padding: 1.75rem;
-      margin-bottom: 2rem;
-    }
-    .progress-bar-track {
-      height: 8px;
-      background: var(--bg-base);
-      border-radius: 9999px;
-      overflow: hidden;
-      margin: 1rem 0;
-    }
-    .progress-bar-fill {
-      height: 100%;
-      background: var(--gradient-brand);
-      width: 0%;
-      transition: width 0.4s ease;
-      border-radius: 9999px;
-    }
-
-    /* Video Player Hub */
-    .video-player-container {
-      background: #000;
-      border-radius: 0.875rem;
-      overflow: hidden;
-      border: 1px solid var(--border-glow);
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-      margin-bottom: 2rem;
-    }
-    video.fidio-player {
-      width: 100%;
-      height: auto;
-      max-height: 520px;
-      display: block;
-    }
-
-    /* Scene Grid */
-    .scenes-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-      gap: 1.25rem;
-    }
-    .scene-card {
-      background: var(--bg-surface);
-      border: 1px solid var(--border-color);
-      border-radius: 0.75rem;
-      overflow: hidden;
-    }
-    .scene-media-preview {
-      width: 100%;
-      height: 180px;
-      background: #000;
-      object-fit: cover;
-      display: block;
-    }
-    .scene-content {
-      padding: 1rem;
-    }
-    .scene-title {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--accent-cyan);
-      margin-bottom: 0.5rem;
-    }
-    .scene-narration {
-      font-size: 0.8125rem;
-      color: var(--text-muted);
-      font-style: italic;
-    }
-
-    /* Responsive & Viewport Media Queries (1280px, 1440px, 1920px+) */
-    @media (min-width: 1440px) {
-      main.app-content, .nav-container {
-        max-width: 1400px;
-      }
-      .projects-grid {
-        grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
-      }
-      .scenes-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      }
-    }
-
-    @media (min-width: 1920px) {
-      main.app-content, .nav-container {
-        max-width: 1680px;
-      }
-      .dashboard-title {
-        font-size: 2.25rem;
-      }
-      .projects-grid {
-        grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
-      }
-    }
-
-    @media (max-width: 768px) {
-      .dashboard-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-      .style-selector {
+    /* Responsive Breakdown */
+    @media (max-width: 1024px) {
+      .features-grid, .stats-container {
         grid-template-columns: repeat(2, 1fr);
       }
-      .modal-card {
-        padding: 1.5rem;
+      .studio-dual-layout {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-stepper {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 640px) {
+      .hero-title {
+        font-size: 2.25rem;
+      }
+      .features-grid, .stats-container {
+        grid-template-columns: 1fr;
+      }
+      .pipeline-stepper {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
       }
     }
   </style>
@@ -475,27 +771,131 @@
         <img src="/branding/favicon/fidio-mark.svg" class="brand-logo-mark" alt="Fídíò">
         <span class="brand-title">Fídíò Studio</span>
       </a>
+      <ul class="nav-links">
+        <li><a class="nav-link active" onclick="showDashboard()">Studio Workspace</a></li>
+        <li><a class="nav-link" href="#features" onclick="document.getElementById('featuresSection').scrollIntoView({behavior: 'smooth'})">AI Engine</a></li>
+        <li><a class="nav-link" href="/docs/api/api_reference.md" target="_blank">API Specs</a></li>
+      </ul>
       <div style="display: flex; align-items: center; gap: 1.25rem;">
         <div class="status-badge">
-          <span class="status-dot"></span> API Engine Active
+          <span class="status-dot"></span> Engine Active
         </div>
         <button class="btn-primary" id="btnOpenNewProject">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
-          New Project
+          Create Video
         </button>
       </div>
     </div>
   </header>
 
+  <!-- BytePlus Style Hero Section -->
+  <section class="hero-section" id="heroSection">
+    <div class="hero-container">
+      <div class="hero-badge-pill">
+        <span>✨ FÍDÍÒ ENGINE 2.0</span> • MULTI-MODAL AI CREATIVE PRODUCTION
+      </div>
+      <h1 class="hero-title">Imagine. Create. <span class="gradient-text">Fídíò.</span></h1>
+      <p class="hero-subtitle">Transform text ideas into production-ready video content with AI scene understanding, natural voice synthesis, and FFmpeg multi-track composition.</p>
+      
+      <!-- Embedded Floating Hero Prompt Studio Bar -->
+      <div class="hero-prompt-card">
+        <textarea class="prompt-textarea" id="heroInputPrompt" placeholder="Describe your video idea... (e.g. A bustling street in Lagos, Nigeria bathed in warm late-afternoon light with colorful Danfo buses and vibrant city energy...)"></textarea>
+        <div class="prompt-controls-row">
+          <div style="display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;">
+            <div class="style-chip-group">
+              <span class="style-chip selected" data-style="cinematic">Cinematic</span>
+              <span class="style-chip" data-style="photorealistic">Photoreal</span>
+              <span class="style-chip" data-style="anime">Anime</span>
+              <span class="style-chip" data-style="cyberpunk">Cyberpunk</span>
+            </div>
+            <select class="select-pill" id="heroSelectAspect">
+              <option value="16:9">16:9 Landscape</option>
+              <option value="9:16">9:16 Vertical Story</option>
+              <option value="1:1">1:1 Square</option>
+            </select>
+            <select class="select-pill" id="heroSelectDuration">
+              <option value="15">15s Duration</option>
+              <option value="30">30s Duration</option>
+              <option value="60">60s Duration</option>
+            </select>
+          </div>
+          <button class="btn-primary" id="btnHeroSubmit">
+            <span>✨ Generate Video Now</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Preset Chips -->
+      <div class="preset-chips-row">
+        <span class="preset-chip-title">Try Prompts:</span>
+        <div class="preset-chip-item" data-prompt="A bustling street in Lagos, Nigeria, bathed in warm late-afternoon light. Yellow Danfo buses rumble past storefronts as Okada riders weave through traffic." data-title="Lagos Street Life — Golden Hour" data-style="cinematic">🎬 Lagos Golden Hour</div>
+        <div class="preset-chip-item" data-prompt="Intelligent irrigation system for small sustainable farms. Automated solar sensors misting lush green crops under morning sunshine." data-title="Sustainable Irrigation System" data-style="photorealistic">🌱 Sustainable Farm Tech</div>
+        <div class="preset-chip-item" data-prompt="Futuristic cyberpunk metropolis with soaring neon skyscrapers, flying vehicles, and rain-slicked reflective streets at midnight." data-title="Cyberpunk Neon Odyssey" data-style="cyberpunk">🏙️ Cyberpunk Odyssey</div>
+        <div class="preset-chip-item" data-prompt="SaaS product platform introduction showing clean UI dashboards, real-time analytics graphs, and sleek workflow automation." data-title="AI Platform Explainer" data-style="cinematic">🚀 SaaS Product Reveal</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Performance Stats Banner -->
+  <div class="stats-bar">
+    <div class="stats-container">
+      <div>
+        <div class="stat-val">100%</div>
+        <div class="stat-lbl">Async Execution Pipeline</div>
+      </div>
+      <div>
+        <div class="stat-val">&lt; 100ms</div>
+        <div class="stat-lbl">API Dispatch Latency</div>
+      </div>
+      <div>
+        <div class="stat-val">1080p / 4K</div>
+        <div class="stat-lbl">FFmpeg Render Output</div>
+      </div>
+      <div>
+        <div class="stat-val">4-Stage</div>
+        <div class="stat-lbl">AI Storyboard Planner</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Feature Capabilities Grid (BytePlus Style) -->
+  <section class="features-section" id="featuresSection">
+    <h2 class="section-title">Powered by Modular AI Infrastructure</h2>
+    <p class="section-subtitle">Fídíò integrates LLM creative planning, visual & audio asset generation, and automated FFmpeg multi-track composition into a single pipeline.</p>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">🧠</div>
+        <h3 class="feature-title">Structured LLM Planner</h3>
+        <p class="feature-desc">OpenRouter AI engine decomposes high-level creative prompts into multi-scene visual prompts, camera directions, and voice scripts.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎨</div>
+        <h3 class="feature-title">Multi-Modal Generation</h3>
+        <p class="feature-desc">Parallel AI model adapters synthesize key visual scenes, background music, and natural voice narration audio clips.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">⚡</div>
+        <h3 class="feature-title">FFmpeg Composition</h3>
+        <p class="feature-desc">Sub-second video stitching, audio-visual multiplexing, aspect scaling, and color processing inside isolated worker processes.</p>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">☁️</div>
+        <h3 class="feature-title">MinIO Object Storage</h3>
+        <p class="feature-desc">S3-compatible persistent storage layer managing raw media assets and final renders with secure, time-bound presigned URLs.</p>
+      </div>
+    </div>
+  </section>
+
   <!-- Main View Container -->
   <main class="app-content" id="appMain">
     
-    <!-- View 1: Dashboard & Projects List -->
+    <!-- View 1: InVideo Style Projects Workspace Dashboard -->
     <section id="viewDashboard">
       <div class="dashboard-header">
         <div>
-          <h1 class="dashboard-title">Creative Projects</h1>
-          <p class="dashboard-subtitle">Imagine. Create. Multi-modal AI Video Production Pipeline.</p>
+          <h2 class="dashboard-title">Studio Projects Workspace</h2>
+          <p style="color: var(--text-muted); font-size: 0.9375rem;">Manage active video requests, inspect scene storyboards, and download final renders.</p>
         </div>
       </div>
 
@@ -504,56 +904,96 @@
       </div>
     </section>
 
-    <!-- View 2: Project Detail & Job Progress Inspector -->
+    <!-- View 2: InVideo Style Pipeline Stepper & Pro Studio Inspector -->
     <section id="viewInspector" style="display: none;">
       <div style="margin-bottom: 1.5rem;">
         <button class="btn-secondary" id="btnBackToDashboard">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-          Back to Projects
+          Back to Studio Projects
         </button>
       </div>
 
-      <div class="inspector-header">
-        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;">
+      <!-- InVideo Production Pipeline Stepper -->
+      <div class="inspector-header" style="background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1rem; padding: 1.75rem; margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1rem;">
           <div>
             <h2 class="modal-title" id="inspectorProjectTitle">Project Title</h2>
-            <p class="card-prompt" id="inspectorProjectPrompt">Project Prompt...</p>
+            <p class="card-prompt" id="inspectorProjectPrompt" style="-webkit-line-clamp: unset;">Project Prompt...</p>
           </div>
           <span class="badge-status badge-processing" id="inspectorStatusBadge">PROCESSING</span>
         </div>
 
-        <div class="progress-bar-track">
-          <div class="progress-bar-fill" id="inspectorProgressBar"></div>
+        <div class="pipeline-stepper" id="pipelineStepper">
+          <div class="step-node active" id="stepPlan">
+            <div class="node-num">1</div>
+            <div class="node-info">
+              <span class="node-title">AI Planning</span>
+              <span class="node-sub">LLM Storyboard</span>
+            </div>
+          </div>
+          <div class="step-node" id="stepAssets">
+            <div class="node-num">2</div>
+            <div class="node-info">
+              <span class="node-title">Asset Generation</span>
+              <span class="node-sub">Visuals & Speech</span>
+            </div>
+          </div>
+          <div class="step-node" id="stepRender">
+            <div class="node-num">3</div>
+            <div class="node-info">
+              <span class="node-title">FFmpeg Render</span>
+              <span class="node-sub">Video Composition</span>
+            </div>
+          </div>
+          <div class="step-node" id="stepDone">
+            <div class="node-num">4</div>
+            <div class="node-info">
+              <span class="node-title">Completed</span>
+              <span class="node-sub">Ready to Export</span>
+            </div>
+          </div>
         </div>
 
-        <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted);">
+        <div class="progress-bar-track" style="height: 8px; background: var(--bg-base); border-radius: 9999px; overflow: hidden; margin-top: 1rem;">
+          <div class="progress-bar-fill" id="inspectorProgressBar" style="height: 100%; background: var(--gradient-brand); width: 0%; transition: width 0.4s ease;"></div>
+        </div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.5rem;">
           <span id="inspectorCurrentStage">Stage: PLANNING</span>
           <span id="inspectorProgressPercent">0% Completed</span>
         </div>
       </div>
 
-      <!-- Render Video Hub (when completed) -->
-      <div id="renderHub" style="display: none;">
-        <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Rendered Video Composition</h3>
-        <div class="video-player-container">
-          <video class="fidio-player" id="mainVideoPlayer" controls poster="/branding/social/fidio-og-template.svg">
-            <source id="videoSource" src="" type="video/mp4">
-            Your browser does not support the video tag.
-          </video>
+      <!-- Studio Dual Layout (Player + Scene Breakdown) -->
+      <div class="studio-dual-layout">
+        <!-- Left: Render Video Hub -->
+        <div>
+          <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Rendered Video Composition</h3>
+          <div class="video-player-container">
+            <video class="fidio-player" id="mainVideoPlayer" controls poster="/branding/social/fidio-og-template.svg">
+              <source id="videoSource" src="" type="video/mp4">
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div style="margin-bottom: 2rem;">
+            <a class="btn-primary" id="btnDownloadRender" href="#" target="_blank" download style="width: 100%; justify-content: center; padding: 0.85rem;">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+              Download Rendered MP4 Video
+            </a>
+          </div>
+          <div class="meta-pills-row" id="renderMetaRow">
+            <div class="meta-pill">Format: MP4</div>
+            <div class="meta-pill">Resolution: 1920x1080</div>
+            <div class="meta-pill">Duration: 15.0s</div>
+            <div class="meta-pill">Status: Final Render</div>
+          </div>
         </div>
-        <div style="display: flex; gap: 1rem; margin-bottom: 2.5rem;">
-          <a class="btn-primary" id="btnDownloadRender" href="#" target="_blank" download>
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
-            Download Rendered MP4
-          </a>
-        </div>
-      </div>
 
-      <!-- Scenes Grid -->
-      <div>
-        <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Generation Scenes & Assets</h3>
-        <div class="scenes-grid" id="scenesGrid">
-          <!-- Rendered dynamically -->
+        <!-- Right: Scenes & Assets Breakdown -->
+        <div>
+          <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 1rem;">Scene Assets & Audio Narration</h3>
+          <div class="scenes-grid" id="scenesGrid">
+            <!-- Rendered dynamically -->
+          </div>
         </div>
       </div>
     </section>
@@ -563,7 +1003,7 @@
   <!-- New Project Modal -->
   <div class="modal-overlay" id="modalNewProject">
     <div class="modal-card">
-      <h2 class="modal-title">Create New Video Generation</h2>
+      <h2 class="modal-title">Create New Video Project</h2>
       <p class="modal-subtitle">Enter your creative idea prompt and select style parameters for Fídíò Engine.</p>
 
       <form id="formNewProject">
@@ -622,6 +1062,7 @@
     let currentProjectId = null;
     let pollInterval = null;
     let selectedStyle = 'cinematic';
+    let heroSelectedStyle = 'cinematic';
 
     // Elements
     const modalNewProject = document.getElementById('modalNewProject');
@@ -629,6 +1070,8 @@
     const viewInspector = document.getElementById('viewInspector');
     const projectsGrid = document.getElementById('projectsGrid');
     const scenesGrid = document.getElementById('scenesGrid');
+    const heroSection = document.getElementById('heroSection');
+    const featuresSection = document.getElementById('featuresSection');
 
     // Init
     document.addEventListener('DOMContentLoaded', () => {
@@ -652,19 +1095,63 @@
         showDashboard();
       });
 
-      // Style option picker
-      document.querySelectorAll('.style-option').forEach(el => {
+      // Style option picker in modal
+      document.querySelectorAll('#modalNewProject .style-option').forEach(el => {
         el.addEventListener('click', () => {
-          document.querySelectorAll('.style-option').forEach(s => s.classList.remove('selected'));
+          document.querySelectorAll('#modalNewProject .style-option').forEach(s => s.classList.remove('selected'));
           el.classList.add('selected');
           selectedStyle = el.dataset.style;
         });
       });
 
-      // Form submission
+      // Hero Style Chip picker
+      document.querySelectorAll('.style-chip-group .style-chip').forEach(el => {
+        el.addEventListener('click', () => {
+          document.querySelectorAll('.style-chip-group .style-chip').forEach(s => s.classList.remove('selected'));
+          el.classList.add('selected');
+          heroSelectedStyle = el.dataset.style;
+        });
+      });
+
+      // Hero Quick Preset Chips
+      document.querySelectorAll('.preset-chip-item').forEach(el => {
+        el.addEventListener('click', () => {
+          const prompt = el.dataset.prompt;
+          const style = el.dataset.style;
+          document.getElementById('heroInputPrompt').value = prompt;
+          if (style) {
+            heroSelectedStyle = style;
+            document.querySelectorAll('.style-chip-group .style-chip').forEach(s => {
+              s.classList.toggle('selected', s.dataset.style === style);
+            });
+          }
+          document.getElementById('heroInputPrompt').focus();
+        });
+      });
+
+      // Direct Hero Generation Form submission
+      document.getElementById('btnHeroSubmit').addEventListener('click', async (e) => {
+        e.preventDefault();
+        const prompt = document.getElementById('heroInputPrompt').value.trim();
+        if (!prompt) {
+          alert('Please enter a creative video prompt first!');
+          document.getElementById('heroInputPrompt').focus();
+          return;
+        }
+        const aspect = document.getElementById('heroSelectAspect').value;
+        const duration = parseInt(document.getElementById('heroSelectDuration').value);
+        const title = prompt.split('.')[0].slice(0, 45) || 'AI Video Project';
+        await handleDirectCreateProject(title, prompt, heroSelectedStyle, aspect, duration);
+      });
+
+      // Form submission in Modal
       document.getElementById('formNewProject').addEventListener('submit', async (e) => {
         e.preventDefault();
-        await handleCreateProject();
+        const title = document.getElementById('inputTitle').value;
+        const prompt = document.getElementById('inputPrompt').value;
+        const aspect = document.getElementById('selectAspect').value;
+        const duration = parseInt(document.getElementById('selectDuration').value);
+        await handleDirectCreateProject(title, prompt, selectedStyle, aspect, duration);
       });
     }
 
@@ -694,10 +1181,10 @@
     function renderProjects(projects) {
       if (!projects || projects.length === 0) {
         projectsGrid.innerHTML = `
-          <div class="empty-state" style="grid-column: 1 / -1;">
-            <div class="empty-icon">🎬</div>
-            <h3 style="font-size: 1.25rem; font-family: 'Outfit', sans-serif; margin-bottom: 0.5rem;">No Creative Projects Yet</h3>
-            <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Click 'New Project' above to transform your ideas into production-ready video content.</p>
+          <div class="empty-state" style="grid-column: 1 / -1; background: var(--bg-surface); border: 1px dashed var(--border-glow); border-radius: 1rem; padding: 3rem; text-align: center;">
+            <div style="font-size: 3rem; margin-bottom: 1rem;">🎬</div>
+            <h3 style="font-size: 1.35rem; font-family: 'Outfit', sans-serif; margin-bottom: 0.5rem;">No Studio Projects Yet</h3>
+            <p style="color: var(--text-muted); margin-bottom: 1.5rem; max-width: 480px; margin: 0 auto 1.5rem auto;">Use the hero prompt generator above or click 'Create Video' to transform your ideas into video content.</p>
           </div>
         `;
         return;
@@ -720,15 +1207,12 @@
       `).join('');
     }
 
-    async function handleCreateProject() {
-      const submitBtn = document.getElementById('btnSubmitGeneration');
+    async function handleDirectCreateProject(title, prompt, style, aspect, duration) {
+      const submitBtn = document.getElementById('btnHeroSubmit');
+      const modalBtn = document.getElementById('btnSubmitGeneration');
       submitBtn.disabled = true;
+      modalBtn.disabled = true;
       submitBtn.innerHTML = '<span>Creating Project...</span>';
-
-      const title = document.getElementById('inputTitle').value;
-      const prompt = document.getElementById('inputPrompt').value;
-      const aspect = document.getElementById('selectAspect').value;
-      const duration = parseInt(document.getElementById('selectDuration').value);
 
       try {
         // 1. Create Project
@@ -754,8 +1238,8 @@
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            prompt: `${selectedStyle} style: ${prompt}`,
-            style: selectedStyle,
+            prompt: `${style} style: ${prompt}`,
+            style: style,
             aspect_ratio: aspect,
             target_duration_seconds: duration
           })
@@ -768,6 +1252,7 @@
 
         modalNewProject.classList.remove('active');
         document.getElementById('formNewProject').reset();
+        document.getElementById('heroInputPrompt').value = '';
 
         // Inspect project
         inspectProject(project.id);
@@ -776,15 +1261,20 @@
         alert(`Generation Error: ${err.message}`);
       } finally {
         submitBtn.disabled = false;
-        submitBtn.innerHTML = '<span>Generate Video</span>';
+        modalBtn.disabled = false;
+        submitBtn.innerHTML = '<span>✨ Generate Video Now</span>';
+        modalBtn.innerHTML = '<span>Generate Video</span>';
       }
     }
 
     async function inspectProject(projectId) {
       currentProjectId = projectId;
       window.location.hash = `#project/${projectId}`;
+      if (heroSection) heroSection.style.display = 'none';
+      if (featuresSection) featuresSection.style.display = 'none';
       viewDashboard.style.display = 'none';
       viewInspector.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
 
       if (pollInterval) clearInterval(pollInterval);
 
@@ -833,15 +1323,34 @@
       const progressPercent = document.getElementById('inspectorProgressPercent');
       const currentStage = document.getElementById('inspectorCurrentStage');
       const statusBadge = document.getElementById('inspectorStatusBadge');
-      const renderHub = document.getElementById('renderHub');
+
+      const stepPlan = document.getElementById('stepPlan');
+      const stepAssets = document.getElementById('stepAssets');
+      const stepRender = document.getElementById('stepRender');
+      const stepDone = document.getElementById('stepDone');
 
       progressBar.style.width = `${job.progress_percentage}%`;
       progressPercent.innerText = `${job.progress_percentage}% Completed`;
       currentStage.innerText = `Stage: ${job.current_stage}`;
 
+      // Reset Stepper
+      [stepPlan, stepAssets, stepRender, stepDone].forEach(s => {
+        s.className = 'step-node';
+      });
+
+      if (job.progress_percentage >= 25) stepPlan.className = 'step-node completed';
+      else stepPlan.className = 'step-node active';
+
+      if (job.progress_percentage >= 50) stepAssets.className = 'step-node completed';
+      else if (job.progress_percentage >= 25) stepAssets.className = 'step-node active';
+
+      if (job.progress_percentage >= 75) stepRender.className = 'step-node completed';
+      else if (job.progress_percentage >= 50) stepRender.className = 'step-node active';
+
       if (job.status === 'COMPLETED') {
         statusBadge.className = 'badge-status badge-completed';
         statusBadge.innerText = 'COMPLETED';
+        stepDone.className = 'step-node completed';
         if (pollInterval) clearInterval(pollInterval);
 
         // Fetch render details if completed
@@ -857,12 +1366,9 @@
     }
 
     async function fetchRenderDetails(projectId) {
-      const renderHub = document.getElementById('renderHub');
       const videoPlayer = document.getElementById('mainVideoPlayer');
       const videoSource = document.getElementById('videoSource');
       const btnDownload = document.getElementById('btnDownloadRender');
-
-      renderHub.style.display = 'block';
 
       try {
         const res = await fetch(`${API_BASE}/projects/${projectId}/render`);
@@ -893,8 +1399,8 @@
     function renderScenesAndAssets(assets) {
       if (!assets || assets.length === 0) {
         scenesGrid.innerHTML = `
-          <div style="grid-column: 1 / -1; color: var(--text-muted); padding: 1.5rem; text-align: center;">
-            Pipeline step running... Generating visual scene assets and audio narration clips.
+          <div style="color: var(--text-muted); padding: 1.5rem; text-align: center; background: var(--bg-surface); border: 1px dashed var(--border-color); border-radius: 0.875rem;">
+            Pipeline step running... Synthesizing visual scene assets and speech narration clips.
           </div>
         `;
         return;
@@ -907,14 +1413,12 @@
 
         return `
           <div class="scene-card">
-            ${isImage && resolvedUrl ? `<img src="${resolvedUrl}" class="scene-media-preview" alt="Scene Asset preview" onerror="this.style.display='none'">` : ''}
-            <div class="scene-content">
-              <div class="scene-title">Asset #${i+1} — ${escapeHtml(a.asset_type)}</div>
-              <p class="scene-narration">Bucket: ${escapeHtml(a.bucket_name)}</p>
-              <p style="font-size: 0.75rem; color: var(--text-dim); margin-top: 0.5rem; word-break: break-all;">Key: ${escapeHtml(a.object_key)}</p>
-              ${isAudio && resolvedUrl ? `<audio controls src="${resolvedUrl}" style="width: 100%; margin-top: 0.75rem; height: 36px;"></audio>` : ''}
-              ${resolvedUrl ? `<a href="${resolvedUrl}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.75rem;">View Signed Asset →</a>` : ''}
-            </div>
+            ${isImage && resolvedUrl ? `<img src="${resolvedUrl}" style="width: 100%; height: 160px; object-fit: cover; border-radius: 0.5rem; margin-bottom: 0.75rem;" alt="Scene preview" onerror="this.style.display='none'">` : ''}
+            <div class="scene-title">Asset #${i+1} — ${escapeHtml(a.asset_type)}</div>
+            <p class="scene-narration">Bucket: ${escapeHtml(a.bucket_name)}</p>
+            <p style="font-size: 0.75rem; color: var(--text-dim); margin-bottom: 0.5rem; word-break: break-all;">Key: ${escapeHtml(a.object_key)}</p>
+            ${isAudio && resolvedUrl ? `<audio controls src="${resolvedUrl}" style="width: 100%; margin-top: 0.5rem; height: 36px;"></audio>` : ''}
+            ${resolvedUrl ? `<a href="${resolvedUrl}" target="_blank" style="color: var(--accent-violet); font-size: 0.8125rem; display: inline-block; margin-top: 0.5rem;">View Signed Asset →</a>` : ''}
           </div>
         `;
       }).join('');
@@ -924,6 +1428,8 @@
       if (pollInterval) clearInterval(pollInterval);
       currentProjectId = null;
       window.location.hash = '';
+      if (heroSection) heroSection.style.display = 'block';
+      if (featuresSection) featuresSection.style.display = 'block';
       viewInspector.style.display = 'none';
       viewDashboard.style.display = 'block';
       loadProjects();
