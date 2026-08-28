@@ -20,11 +20,17 @@ router = APIRouter(tags=["Assets & Renders"])
 SAMPLE_MP4_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../packages/providers/sample_render.mp4"))
 
 
+_storage_adapter_cache = None
+
 def get_storage_adapter() -> ObjectStorage:
+    global _storage_adapter_cache
+    if _storage_adapter_cache is not None:
+        return _storage_adapter_cache
     try:
-        return MinIOStorageAdapter()
+        _storage_adapter_cache = MinIOStorageAdapter()
     except Exception:
-        return DevMockStorageAdapter()
+        _storage_adapter_cache = DevMockStorageAdapter()
+    return _storage_adapter_cache
 
 
 @router.get("/assets/raw/{bucket}/{object_key:path}")

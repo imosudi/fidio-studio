@@ -28,13 +28,19 @@ class MinIOStorageAdapter(ObjectStorage):
         self.access_key = access_key or settings.MINIO_ACCESS_KEY
         self.secret_key = secret_key or settings.MINIO_SECRET_KEY
 
-        # Initialize boto3 S3 client for MinIO
+        # Initialize boto3 S3 client for MinIO with fast socket timeouts
+        s3_config = Config(
+            signature_version="s3v4",
+            connect_timeout=0.5,
+            read_timeout=0.5,
+            retries={"max_attempts": 0}
+        )
         self.client = boto3.client(
             "s3",
             endpoint_url=self.endpoint_url,
             aws_access_key_id=self.access_key,
             aws_secret_access_key=self.secret_key,
-            config=Config(signature_version="s3v4"),
+            config=s3_config,
             region_name="us-east-1"
         )
         self.presigned_client = boto3.client(
@@ -42,10 +48,11 @@ class MinIOStorageAdapter(ObjectStorage):
             endpoint_url=self.external_endpoint_url,
             aws_access_key_id=self.access_key,
             aws_secret_access_key=self.secret_key,
-            config=Config(signature_version="s3v4"),
+            config=s3_config,
             region_name="us-east-1"
         )
-        self._ensure_buckets_exist()
+        # Validate connection; will raise Exception if MinIO endpoint is unreachable
+        self.client.head_bucket(Bucket=settings.MINIO_BUCKET_MEDIA)
 
     def _ensure_buckets_exist(self):
         """Idempotently ensure required media and render buckets exist."""
