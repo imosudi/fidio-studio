@@ -37,9 +37,11 @@ class FFmpegEngine:
             concat_file_content = ""
 
             for img_path in image_paths:
-                concat_file_content += f"file '{img_path}'\nduration {scene_duration}\n"
+                safe_path = img_path.replace("'", "'\\''")
+                concat_file_content += f"file '{safe_path}'\nduration {scene_duration}\n"
             if image_paths:
-                concat_file_content += f"file '{image_paths[-1]}'\n"
+                safe_last_path = image_paths[-1].replace("'", "'\\''")
+                concat_file_content += f"file '{safe_last_path}'\n"
 
             with tempfile.NamedTemporaryFile("w", suffix=".txt", delete=False) as concat_file:
                 concat_file.write(concat_file_content)

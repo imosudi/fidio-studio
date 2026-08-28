@@ -27,16 +27,40 @@ app.add_middleware(
 
 
 @app.middleware("http")
-async def correlation_id_middleware(request: Request, call_next):
-    """Correlation ID and Structured Logging Middleware."""
+async def security_and_correlation_middleware(request: Request, call_next):
+    """Security Headers, Path Traversal Check, and Correlation ID Middleware."""
     correlation_id = request.headers.get("X-Correlation-ID", str(uuid.uuid4()))
     request.state.correlation_id = correlation_id
     start_time = time.time()
 
+    # Path Traversal & Injection Prevention
+    raw_path = str(request.url.path)
+    if ".." in raw_path or "%2e%2e" in raw_path.lower():
+        logger.warning(f"Rejected path traversal attempt: {raw_path}", extra={"correlation_id": correlation_id})
+        return JSONResponse(
+            status_code=400,
+            content={
+                "success": False,
+                "error": {
+                    "code": "PATH_TRAVERSAL_DETECTED",
+                    "message": "Invalid request path containing unsafe traversal sequences.",
+                    "details": {},
+                    "request_id": correlation_id
+                }
+            }
+        )
+
     response: Response = await call_next(request)
     duration_ms = round((time.time() - start_time) * 1000, 2)
 
+    # Inject Security Headers
     response.headers["X-Correlation-ID"] = correlation_id
+    response.headers["X-Content-Type-Options"] = "nosniff"
+    response.headers["X-Frame-Options"] = "DENY"
+    response.headers["X-XSS-Protection"] = "1; mode=block"
+    response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
+    response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
+
     logger.info(
         f"{request.method} {request.url.path} -> {response.status_code} ({duration_ms}ms)",
         extra={"correlation_id": correlation_id}

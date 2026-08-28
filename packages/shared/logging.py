@@ -4,6 +4,21 @@ import json
 from typing import Any, Dict
 
 
+SENSITIVE_KEYS = {"password", "secret", "token", "key", "authorization", "bearer", "api_key", "sk-"}
+
+
+def redact_secrets(message: str) -> str:
+    """Scrub passwords, tokens, and credentials from string log content."""
+    import re
+    if not isinstance(message, str):
+        return message
+    # Mask Bearer tokens and API keys matching sk- patterns
+    redacted = re.sub(r'(Bearer\s+|sk-)[A-Za-z0-9_\-\.]+', r'\1[REDACTED]', message)
+    # Mask password/key parameter values
+    redacted = re.sub(r'(password|secret|token|api_key|access_key)=([^&\s]+)', r'\1=[REDACTED]', redacted, flags=re.IGNORECASE)
+    return redacted
+
+
 class JSONFormatter(logging.Formatter):
     """Structured JSON Log Formatter for Fídíò Platform."""
 
@@ -12,7 +27,7 @@ class JSONFormatter(logging.Formatter):
             "timestamp": self.formatTime(record, self.datefmt),
             "level": record.levelname,
             "logger": record.name,
-            "message": record.getMessage(),
+            "message": redact_secrets(record.getMessage()),
             "module": record.module,
             "filename": record.filename,
             "line": record.lineno,
