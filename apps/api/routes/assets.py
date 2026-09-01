@@ -95,76 +95,17 @@ async def get_raw_asset(
     safe_title = project_title.replace("'", "").replace(":", " -")[:55]
 
     if object_key.endswith(".mp4") or "renders" in bucket or "renders" in object_key:
-        cache_key = object_key.replace("/", "_").replace("\\", "_")
-        custom_mp4_path = f"/tmp/fidio_render_{cache_key}.mp4"
-        
-        if not os.path.exists(custom_mp4_path):
-            ffmpeg_bin = shutil.which("ffmpeg") or "/usr/bin/ffmpeg"
+        if storage.object_exists(bucket, object_key):
             try:
-                if len(scenes) >= 3:
-                    scene_files = []
-                    colors = ["0x4c1d95", "0x7c2d12", "0x0f172a"]
-                    text_colors = ["yellow", "orange", "cyan"]
-                    
-                    for idx, sc in enumerate(scenes[:3]):
-                        sc_path = f"/tmp/sc_{cache_key}_{idx+1}.mp4"
-                        sc_title = (sc.title or f"Scene {idx+1}").replace("'", "").replace(":", " -")[:35]
-                        sc_prompt = sc.visual_prompt.replace("'", "").replace(":", " -")[:60]
-                        sc_voice = (sc.narration_script or "Imagine. Create. Fídíò.").replace("'", "").replace(":", " -")[:60]
-                        sc_cam = (sc.camera_movement or "Cinematic Pan").replace("'", "")
-                        
-                        cmd_sc = [
-                            ffmpeg_bin, "-y",
-                            "-f", "lavfi", "-i", f"color=c={colors[idx%len(colors)]}:s=1280x720:d=5:r=30",
-                            "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
-                            "-t", "5",
-                            "-vf", (
-                                f"drawtext=text='FÍDÍÒ STUDIO • SCENE {idx+1} OF {len(scenes)}':fontcolor={text_colors[idx%len(text_colors)]}:fontsize=22:x=(w-text_w)/2:y=100,"
-                                f"drawtext=text='SCENE: {sc_title}':fontcolor=white:fontsize=26:x=(w-text_w)/2:y=180,"
-                                f"drawtext=text='VISUAL: {sc_prompt}':fontcolor=0xe2e8f0:fontsize=18:x=(w-text_w)/2:y=280,"
-                                f"drawtext=text='NARRATION: {sc_voice}':fontcolor=0x38bdf8:fontsize=20:x=(w-text_w)/2:y=380,"
-                                f"drawtext=text='CAMERA: {sc_cam}':fontcolor=0x94a3b8:fontsize=16:x=(w-text_w)/2:y=480"
-                            ),
-                            "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
-                            sc_path
-                        ]
-                        subprocess.run(cmd_sc, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                        scene_files.append(sc_path)
-                    
-                    concat_list_path = f"/tmp/concat_{cache_key}.txt"
-                    with open(concat_list_path, "w") as f:
-                        for s_file in scene_files:
-                            f.write(f"file '{s_file}'\n")
-                    
-                    cmd_concat = [
-                        ffmpeg_bin, "-y",
-                        "-f", "concat", "-safe", "0", "-i", concat_list_path,
-                        "-c", "copy",
-                        custom_mp4_path
-                    ]
-                    subprocess.run(cmd_concat, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                else:
-                    cmd = [
-                        ffmpeg_bin, "-y",
-                        "-f", "lavfi", "-i", "color=c=0x110e24:s=1280x720:d=15:r=30",
-                        "-f", "lavfi", "-i", "anullsrc=r=44100:cl=stereo",
-                        "-t", "15",
-                        "-vf", (
-                            f"drawtext=text='FÍDÍÒ AI CINEMATIC GENERATION':fontcolor=purple:fontsize=30:x=(w-text_w)/2:y=180,"
-                            f"drawtext=text='PROMPT: {safe_title}':fontcolor=white:fontsize=24:x=(w-text_w)/2:y=260,"
-                            f"drawtext=text='Multi-Scene Visual & Audio Composition • 1080p':fontcolor=cyan:fontsize=20:x=(w-text_w)/2:y=330,"
-                            f"drawtext=text='✨ FINAL RENDER EXPORT READY':fontcolor=green:fontsize=22:x=(w-text_w)/2:y=420"
-                        ),
-                        "-c:v", "libx264", "-pix_fmt", "yuv420p", "-c:a", "aac",
-                        custom_mp4_path
-                    ]
-                    subprocess.run(cmd, check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-            except Exception as e:
-                logger.warning(f"Error rendering dynamic video: {e}")
-                custom_mp4_path = SAMPLE_MP4_PATH
+                data = storage.get_object(bucket, object_key)
+                return Response(content=data, media_type="video/mp4")
+            except Exception:
+                pass
 
-        if os.path.exists(custom_mp4_path):
-            with open(custom_mp4_path, "rb") as f:
+        # Do not generate a text-overlay-only fallback video.
+        # Real render artifacts should come from the media provider pipeline.
+        if os.path.exists(SAMPLE_MP4_PATH):
+            with open(SAMPLE_MP4_PATH, "rb") as f:
                 content = f.read()
             return Response(content=content, media_type="video/mp4")
 

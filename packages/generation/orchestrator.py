@@ -12,6 +12,7 @@ from packages.domain.state import JobStateMachine
 from packages.generation.planner import GenerationPlanner
 from packages.domain.media_providers import MediaProvider
 from packages.providers.dev_media_mock import DevMockMediaProvider
+from packages.providers.local_media import LocalMediaProvider
 from packages.shared.exceptions import FidioException, ValidationException
 from packages.shared.logging import logger
 
@@ -34,7 +35,7 @@ class PipelineOrchestrator:
         media_provider: Optional[MediaProvider] = None
     ):
         self.planner = planner or GenerationPlanner()
-        self.media_provider = media_provider or DevMockMediaProvider()
+        self.media_provider = media_provider or LocalMediaProvider()
 
     async def execute_job(
         self,
@@ -290,8 +291,8 @@ class PipelineOrchestrator:
             if existing_render:
                 return existing_render
 
-            dev_provider = self.media_provider if isinstance(self.media_provider, DevMockMediaProvider) else DevMockMediaProvider()
-            render_res = await dev_provider.render_video(
+            render_provider = self.media_provider if hasattr(self.media_provider, "render_video") else LocalMediaProvider()
+            render_res = await render_provider.render_video(
                 plan_id=str(plan.id),
                 scenes_count=len(scenes)
             )
