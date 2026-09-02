@@ -27,6 +27,9 @@ class GenerationPlanner:
     def __init__(self, provider: Optional[LLMProvider] = None):
         if provider:
             self.provider = provider
+        elif settings.USE_MOCK_PROVIDERS:
+            logger.info("USE_MOCK_PROVIDERS=true. Initializing GenerationPlanner with DevMockLLMProvider.")
+            self.provider = DevMockLLMProvider()
         elif settings.OPENROUTER_API_KEY:
             self.provider = OpenRouterLLMProvider()
         else:

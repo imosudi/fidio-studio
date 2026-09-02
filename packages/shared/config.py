@@ -43,6 +43,7 @@ class Settings(BaseSettings):
     MINIO_USE_SSL: bool = False
 
     # AI Provider Configuration
+    USE_MOCK_PROVIDERS: bool = False
     OPENROUTER_API_KEY: Optional[str] = None
     OPENROUTER_BASE_URL: str = "https://openrouter.ai/api/v1"
     OPENROUTER_MODEL_PLANNING: str = "anthropic/claude-3.5-sonnet"

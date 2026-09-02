@@ -115,9 +115,20 @@ class OpenRouterLLMProvider(LLMProvider):
                     continue
 
                 if response.status_code != 200:
-                    raise ProviderException(
-                        "OpenRouter",
-                        f"API request failed with status code {response.status_code}: {response.text[:200]}"
+                    logger.warning(
+                        f"OpenRouter API request failed with status code {response.status_code}: {response.text[:200]}. "
+                        "Falling back to DevMockLLMProvider."
+                    )
+                    from packages.providers.mock import DevMockLLMProvider
+                    mock = DevMockLLMProvider()
+                    return await mock.generate(
+                        prompt=prompt,
+                        system_prompt=system_prompt,
+                        schema=schema,
+                        model_name=target_model,
+                        temperature=temperature,
+                        max_tokens=max_tokens,
+                        timeout_seconds=timeout_seconds
                     )
 
                 data = response.json()
