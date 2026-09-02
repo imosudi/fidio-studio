@@ -115,10 +115,10 @@ docker compose up -d --build
 ```
 
 ### Services & Ports
-- **Web Application:** `http://localhost:3000`
-- **REST API Documentation (Swagger):** `http://localhost:8000/docs`
-- **Prometheus Metrics:** `http://localhost:8000/metrics`
-- **MinIO Storage Console:** `http://localhost:9001` (User: `minioadmin` / Pass: `minioadmin`)
+- **Web Application:** `http://fidio.site`
+- **REST API Documentation (Swagger):** `http://api.fidio.site/docs`
+- **Prometheus Metrics:** `http://prometheus.fidio.site:9090`
+- **MinIO Storage Console:** `http://minio.fidio.site:9001` (User: `minioadmin` / Pass: `minioadmin`)
 
 ---
 
